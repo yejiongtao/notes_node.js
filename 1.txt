@@ -1,6 +1,120 @@
 reading http://eloquentjavascript.net/
 
-1. 
+1. values, types, operations
+	six basic types of values in JavaScript
+		numbers
+			js uses 64 bits for each number
+			3 / 2	// 1.5
+				use Math.floor() to get 1
+			special numbers
+				Infinity and -Infinity
+					Infinity - 1 is still Infinity
+					but don't rely too much on Infinity, it'll easily lead to NaN
+				NaN
+					e.g. 0 / 0, Infinity - Infinity
+					NaN == NaN	// false
+					isNaN()
 
+		strings
+			both single and double quotes work
+			concatenate, 'a'+ 'b'
 
+		Booleans
+			true and false
+			console.log("Aa" < "Z" )	// true. based on Unicode
+
+		undefined values
+			null and undefined
+				you can treat them as interchangeable 
+		objects
+		functions
+
+	unary operations
+		typeof 4.5	// number
+	
+	automatic type conversion
+		8 * null	// 0, with null conversed to 0
+		"5" - 1		// 4, with "5" conversed to 5
+		"5" + 1		// "51", with 1 conversed to "1"
+		"five" * 2	// NaN, cuz "five" cannot be conversed to a number
+		false == 0	// true. 
+			0, NaN, "" count as false, while all the other values count as true
+			use === and !== to compare values without automatic type conversions
+			since js' automatic type conversion is somehow confusing, so use === if you can 
+		null==undefined	// true, only when both sides are one of null or undefined
+		null == 0	// false
+	
+	type conversion
+		Number()
+			the first letter is capitalized because it's actually a constructor
+
+	short-circuiting of logical operators
+		|| returns left-side == true ? left-side : right-side
+			(this can be used to provide a default value)
+			null || "user"		// "user"
+			"Tau" || "user"		// "Tau"
+		&& returns left-side == false ? left-side : right-side
+
+2. program structure
+	expressions and statements
+		you can ommit the semicolon sometimes
+			but sometimes if you do that, the next line will be treated as part of the same statement		
+			and the rules for this are complex
+			so do not ommit the semicolon
+	variables
+		var x = 1, y = ''
+		// it's better to use var every time you declare a variable
+		// so that declaration can be seperated from assignment
+	console.log()
+		most JavaScript systems, including all modern web browsers and Node.js, provide this function
+			in browsers, the output lands in the JavaScript console (inside development tools)
+	
+	alert and prompt
+		in browser environments, use alert() and confirm() to prompt a message
+
+3. functions
+	defining (functions are variables in js)
+		var square = function(x) {
+			return x * x;
+		};
+		// a function with return; or without return will return undefined
+	scopes
+		you can access a global variable, as long as you haven't declared a local variable with the same name
+		nested scope
+			nested functions are allowed
+			but in js, functions are the only things that can create a new scope
+				var x = 1;
+				{ var x = 2; }
+				// here, x is 2!
+		if you declare a variable without var in a function
+			it's a global variable!
+	
+	another way to declare functions
+		function square(x) {}
+		one thing that the var way is not capable of 
+			the code below works
+				future();
+				function future() {}
+			cuz function declarations are not part of the regular top-to-bottom flow of control
+		but don't put such a function definition inside a if block or a loop
+			cuz different js platforms behave differently in this situation
+			so only use this form in the outermost block of a function or a program
+		
+	optional arguments
+		if you pass too many arguments, the function just ignores the rest
+		if you pass too few, the missing ones are assigned undefined
+			the upside of this is that a funtion can take various number of arguments
+	
+	closure
+		a feature that being able to reference a specific instance of local variables in an enclosing function
+		e.g.
+			function multipler(factor) {
+				return function(number) {
+					return number * multipler;
+				};
+			}
+			var twice = multipler(2);
+			console.log(twice(5));		// 10
+			// in this way, you can access factor every time you call multipler
+			// and also, you can call multipler() several times with different values
 
