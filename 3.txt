@@ -26,7 +26,23 @@
 		Rabbit.prototype.food = "grass";	// get the prototype of the instances created through this constructor
 		console.log(blackRabbit.type, 'rabbits eat', blackRabbit.food);
 
-	overriding derived properties
-
+	prototype interference
+		enumerable and nonenumerable properties
+			all properties we create by simply assigning to them are enumerable
+				you can define nonenumerable properties using Object.defineProperty()
+			the standard properties in Object.prototype are all nonenumerable
+				which will not show in a for/in loop
+				but the in operator returns true
+		this may be confusing when you use the in operator to determine whether the object contains the property
+			to avoid that, use o.hasOwnProperty(name) to decide
+	
+	prototype-less objects
+		var map = Object.create(null);
+			// create an object with no prototype, so you don’t have to worry about property interference
+			// in this way, all the properties are its own properties
+	
+	polymorphism
+		todo
+		
 
 
