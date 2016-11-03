@@ -1,5 +1,32 @@
-1. objects and arrays
+1. the secret life of objects
+	(JavaScript's special ways to deal with objects)
+	methods
+		there's a special variable, this
 
+	prototypes (similar to inheritance)
+		most objects have a prototype (except Object.prototype)
+			objects inheritate properties from their prototypes
+		the entity behind almost all objects, Object.prototype
+			console.log(Object.getPrototypeOf({}) == Object.prototype);	// true
+			there are a few methods that come with Object.prototype, such as toString
+		other prototypes
+			Function.prototype is functions' prototype
+			Array.prototype is arrays' prototype
+			Function.prototype and Array.prototype's prototype is also Object.prototype
+		creating object with a specific prototype
+			var dad = { name: 'BA' };
+			var son = Object.create(dad);
+			console.log(son.name);		// 'BA'
+
+	constructors
+		function Rabbit(type) {		// the first letter is capitalized to be distinguished
+			this.type = type;	// by default, the this object is returned
+		}
+		var blackRabbit = new Rabbit("black");	// use new to create objects via a constructor
+		Rabbit.prototype.food = "grass";	// get the prototype of the instances created through this constructor
+		console.log(blackRabbit.type, 'rabbits eat', blackRabbit.food);
+
+	overriding derived properties
 
 
 

@@ -1,0 +1,130 @@
+1. objects and arrays
+	array
+		var l = [2, 3, 4];
+		l.push(5);
+		l.pop();
+		console.log(l.join(' '));	// '2 3 4'
+		l.indexOf(4)
+		l.shift();		// pops the first item
+		l.unshift(1);		// adds the item to the beginning of the list
+		var l1 = l.slice(2, 4);
+		var l2 = l1.concat(l1);
+	properties
+		almost every js values have properties (except null and undefined)
+		two ways to access the properties
+			with a dot
+				l.length
+				// the part after a dot must be a valid variable name
+			with square brackets
+				l['length']	// equals to l.length
+				l[0]
+				// the expression is evaluated to get the property name
+		(accessing a non-existed property results in a undefined)
+		the elements in an array are stored in properties
+			since the names of these properties are numbers, so we cannot use a dot to access them, but square brackets
+	methods
+		of course many objects contain some properties that refer to function values
+
+	objects
+		values of the type object are arbitrary collections of properties
+			var o = {
+				b: true,
+				l: [1, 2, 3],
+				"a thing": 1	// since this is not a valid name, you can only access it via o['a thing']
+			};
+			o.b = false;	// replaces the old property or creates a new one if it didn't exist
+			delete o.b;		// delete a property
+			console.log("b" in o);	// look for a property
+				// note that if you set a property to undefined, it still exists
+		arrays are just a kind of objects
+		comparing objects using == is reference compasison
+
+	objects as maps
+		var map = {};
+		map['a'] = 1;
+		if('a' in map)
+			console.log(map['a']);
+		for(var key in map)	// this is a special for loop for going over an object's properties
+			console.log(key + map[key]);
+	
+	strings
+		values of type string, number, and Boolean are not objects
+			the values are immutable
+			but these types do have some built-in properties
+		mostly used methods
+			slice(), indexOf(), trim(), length, charAt()
+			s[0]
+		
+	the arguments object
+		when a function is called, a special variable named arguments is added to the environment
+			which refers to an object that holds all of the arguments passed to the function
+				function f() {
+					for(var key in arguments)
+						console.log(key, arguments[key]);
+				}
+	the Math object
+		PI, sin(), asin(), max(), random(), floor()
+
+2. higher-order functions
+	functions that operate on other functions, either by taking them as arguments or by returning them, are called higher-order functions
+	examples
+		a function that apply an action to each item in an array
+			function forEach(array, action) {
+				for(var i=0; i < array.length; i++)
+					action(array[i]);
+			}
+			// this is actually a method of array
+		a trivial example
+			function transparentWrapping(f) {
+				return function() {
+					return f.apply(null, arguments);
+					// this is how you pass all arguments of this returned function to f()
+				};
+			}
+	JSON
+		JSON is similar to js' way of writing arrays and objects, with a few restrictions
+			all property names have to be surrounded by double quotes
+			only simple data expressions are allowed
+				no function calls, variables, or anything that involves actual computation
+		to use
+			var str = JSON.stringify({name: 'X, born: 1980});
+				// gets '{"name": "X", "born": 1980}'
+			console.log(JSON.parse(str).born);	// 1980
+	
+	filtering an array
+		var l1 = l.filter(function(x) {	// x is an item in array l
+			return x > 1;		// returning true for those you want to keep
+		});
+	
+	transforming an array with map()
+		var l2 = l.map(function(x) {
+			var names = ['zero', 'one', 'two'];
+			return names[x];
+		});
+	
+	summarizing with reduce
+		to find the max
+			var max = l.reduce(function(max, cur) {
+			// one of the arguments is the current result, the other one is the current item
+			// at first, the current result is l[0], and the current item is l[1]
+				return max > cur ? max : cur;
+			});
+	
+	composability
+		higher-order functions start to shine when you need to compose functions
+		e.g. to find the average age for men
+			function average(array) {
+				function plus(a, b) { return a+b;}
+				return array.reduce(plus) / array.length;
+			}
+			function age(p) { return p.age; }
+			function male(p) { return p.sex == 'm'; }
+
+			console.log(average(a.filter(male).map(age)));
+
+	the cost
+		in js, building abstractions result in relatively inefficiencies
+		e.g. manipulating arrays using higher-order functions brings the creation of many intermediate arrays
+
+	bind()
+		which all functions have, creates a new function that will call the original function but with some of the arguments already fixed
