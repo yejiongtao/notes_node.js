@@ -54,6 +54,7 @@
 		mostly used methods
 			slice(), indexOf(), trim(), length, charAt()
 			s[0]
+			== is deep comparison, cuz strings are not objects, they are values
 		
 	the arguments object
 		when a function is called, a special variable named arguments is added to the environment
@@ -123,7 +124,7 @@
 			console.log(average(a.filter(male).map(age)));
 
 	the cost
-		in js, building abstractions result in relatively inefficiencies
+		in js, building abstractions results in relatively inefficiencies
 		e.g. manipulating arrays using higher-order functions brings the creation of many intermediate arrays
 
 	bind()

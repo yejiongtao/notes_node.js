@@ -5,7 +5,7 @@
 
 	prototypes (similar to inheritance)
 		most objects have a prototype (except Object.prototype)
-			objects inheritate properties from their prototypes
+			objects inherit properties from their prototypes
 		the entity behind almost all objects, Object.prototype
 			console.log(Object.getPrototypeOf({}) == Object.prototype);	// true
 			there are a few methods that come with Object.prototype, such as toString
@@ -19,7 +19,7 @@
 			console.log(son.name);		// 'BA'
 
 	constructors
-		function Rabbit(type) {		// the first letter is capitalized to be distinguished
+		function Rabbit(type) {		// the first letter is capitalized to make it distinguished
 			this.type = type;	// by default, the this object is returned
 		}
 		var blackRabbit = new Rabbit("black");	// use new to create objects via a constructor
@@ -29,7 +29,7 @@
 	prototype interference
 		enumerable and nonenumerable properties
 			all properties we create by simply assigning to them are enumerable
-				you can define nonenumerable properties using Object.defineProperty()
+				you can define nonenumerable properties using Object.defineProperty()  with some arguments
 			the standard properties in Object.prototype are all nonenumerable
 				which will not show in a for/in loop
 				but the in operator returns true
@@ -41,8 +41,63 @@
 			// create an object with no prototype, so you don’t have to worry about property interference
 			// in this way, all the properties are its own properties
 	
-	polymorphism
-		todo
+	getters and setters
+		defining on creation
+			var a = {
+				elements: ['one', 'two'],
+				get first() { return elements[0]; },
+				set first(value) { elements[0] = value; }
+			};
+			a.first = 'one1';
+		defining after creation
+			Object.defineProperty(a, 'first', { get: function(){
+				return this.elements[0];
+			}})
+	
+	inheritance
+		a prototype itself can have prototype (just like subclass)
+			// e.g. create a constructor using Array.prototype as prototype
+			function MyArray() {
+				for(var i in arguments)
+					this.push(arguments[i]);
+			}
+			MyArray.prototype = new Array();	// or, Object.create(Array.prototype)
+			var a = new MyArray('1', '2');
 		
-
-
+	instanceof
+		to know whether an object was derived from a specific constructor
+			[1] instanceof Array	// true
+			[1] instanceof Object	// true
+		
+2. bugs and error handling
+	strict mode
+		"use strict";	// put this at the top of a file or a function body
+				// use this to solve some problems including the followings
+		problem 1
+			a = 1;	// if a didn't exist, and you don't use var, a new global variable will be quietly created
+		problem 2
+			function Person(name) { this.name = name; }
+			var tom = Person("Tom");
+				// if you forget to use new (i.e. treating Person() as a normal function), the this inside Person() will refer to global, and this.name refers to a global variable named 'name'
+			console.log(name);	// 'Tom'
+		
+	exceptions
+		throw new Error('Sooooo error!');	// the object has a stack property
+		the try-catch-finally is similar to Java
+		but in js, you cannot selectively catch a specific kind of Error
+			you can implement different kinds of Error on your own
+				function InputError(message) {
+					this.message = message;
+					this.stack = (new Error()).stack;
+				}
+				InputError.prototype = Object.create(Error.prototype);
+				InputError.prototype.name = "InputError"; // we give a name because the standard error types in js also have such a property
+			then we can use instanceof to check the type of an error
+				try {
+				} catch (e) {
+					if(e instanceof InputError)
+						//...
+					else
+						throw e;
+				}
+	

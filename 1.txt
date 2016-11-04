@@ -62,7 +62,7 @@ reading http://eloquentjavascript.net/
 			and the rules for this are complex
 			so do not ommit the semicolon
 	variables
-		var x = 1, y = ''
+		var x = 1, y = '';
 		// it's better to use var every time you declare a variable
 		// so that declaration can be seperated from assignment
 	console.log()
