@@ -3,7 +3,11 @@
 	
 2. node.js
 	callback-style asynchronicity
-		asynchronicity is infectious (every function that calls an asynchronous function will become asynchronous)
+		asynchronicity is infectious
+			(every function that calls an asynchronous function will become asynchronous)
+		error handling
+			exceptions aren't automatically propagated to callbacks but rather passed to them as arguments
+			so they have to be handled explicitly every time
 
 	usage of some global variables
 		process.exit(code)	// exit the node process
@@ -41,6 +45,7 @@
 			rename()
 			unlink()	remove a file
 			readFileSync()	many of the functions come in both asynchronous and synchronous variants
+			watch()		call the callback if the file changes
 
 	the http module (https module is similar)
 		server
@@ -63,3 +68,44 @@
 			request.end();
 	
 	streams
+		writable streams
+			a widely used concept in Node interfaces
+				http's request and response objects are writable or readable streams
+			write()		can be passed to a string or a Buffer object
+			end()		closes the stream
+					and writes out some data if any argument is given
+					// both write() and end() can also be passed to a callback function, which is called when the action is finished
+			fs.createWriteStream() creates a stream that points to a file
+					so that you can write the file one piece at a time
+
+		readable streams
+			reading from a stream is done using event handlers, rather than methods
+			objects that emit events in Node have a method called 'on'
+				(similar to addEventListenr())
+				you give it an event name and then a function
+				it will register that function to be called whenever the given event occurs
+			readable streams have 'data' and 'end' events
+				'data' is fired every time some data comes in
+				'end' is fired whenever the stream is at its end
+			(a file can be read as a readable stream using fs.createReadStream())
+			e.g. in a http server
+				http.createServer(function(request, response) {
+				    response.writeHead(200, {"Content-Type": "text/plain"});
+				    request.on('data', function (chunk) {
+					// it will get a Buffer object
+					response.write(chunk.toString().toUpperCase());
+				    });
+				    request.on('end', function() {
+					response.end();
+				    });
+				}).listen(8000);
+
+	the url module
+		can be used to parse urls, etc
+	
+	the mime module (installed via npm)
+		can determine the file type based on the extension and translate it into MIME type
+	
+3. curl
+	a command-line tool, widely available on Unix-like systems, can be used to make HTTP requests
+

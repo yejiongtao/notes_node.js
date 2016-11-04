@@ -1,0 +1,16 @@
+reading Node.js the Right Way, Practical, Server-Side JavaScript That Scales
+	" Ruby is more than Rails, Python is more than Django, and Node.js is more than serving web content. "
+
+1. basics
+	Node.js couples JS with an event loop for quickly dispatching operations when events occur
+		things other than your callbacks -like waiting for data from a file or a HTTP request- is handled by Node, in parallel
+		(注意waiting是parallel的，读取已经在callback里面了，不是parallel)
+
+	single threaded and highly parallel，理解：
+		其实所谓多线程也都是排队，而且线程太多的话切换会花费很大
+			所以一般线程数与CPU线程数相当为佳（一个线程跑在多个CPU线程上也没办法很好利用CPU的多线程）
+		Node.js 就干脆单线程，利用async IO 把等待的时间都利用起来
+
+2. dealing with file system
+	
+

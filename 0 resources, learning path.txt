@@ -7,12 +7,14 @@
 	NodeJS
 		http://eloquentjavascript.net/
 		node入门
-		nodejs in action
-		nodejs in practice
-		nodejs the right way
+		nodejs in action 
+		nodejs in practice (deep)
+		nodejs the right way (决定先看这个)
 		nodejs design patterns
 		api
 	Express
+		express in action (先看)
+		web development with node and express
 	React
 
 
