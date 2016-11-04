@@ -1,0 +1,65 @@
+1. nodejs code assistance in WebStorm
+	settings > Languages & Frameworks > Node.js and NPM > code assistance
+	
+2. node.js
+	callback-style asynchronicity
+		asynchronicity is infectious (every function that calls an asynchronous function will become asynchronous)
+
+	usage of some global variables
+		process.exit(code)	// exit the node process
+		process.argv		// get the command-line arguments
+					// the actual arguments start at index 2
+		the global scope object is called 'global' on Node, instead of 'window' in browsers
+
+	modules
+		pathnames
+			"/", "./", "../"
+			when a string doesn't look like a relative or absolute path
+				it's assumed to refer to either a built-in module or a module installed in a node_modules directory
+
+	installing with NPM
+		NPM is an online repository of JS modules, many of which are specially written for Node
+		e.g. npm install figlet	// figlet can convert text into ASCII drawings
+
+	the file system module
+		basic usage
+			var fs = require("fs");
+
+			// read a file
+			// if you don't specify the encoding, a Buffer object will be returned instead of string
+			fs.readFile('file.txt', 'utf8', function(error, text) {
+				if(error) throw error;
+				console.log(text);
+			});
+		// ATTENTION! for those function passed as an argument, the names of the arguments do not matter, only the order matter!
+
+			// write to a file
+			// if a string is given instead of Buffer, it will write to the file using its default encoding utf-8
+		other usage
+			readdir()	get the files in a directory
+			stat()		retrieve information about a file
+			rename()
+			unlink()	remove a file
+			readFileSync()	many of the functions come in both asynchronous and synchronous variants
+
+	the http module (https module is similar)
+		server
+			var http = require('http');
+			var server = http.createServer(function(request, response) {
+			    response.writeHead(200, {"Content-Type":"text/html"});
+			    response.write("<h1>Hello</h1>");	// you can call this multiple times
+			    response.end();
+			});
+			server.listen(8000);	// http://localhost:8000
+		client
+			var http = require("http");
+			var request = http.request(
+			    { hostname: 'localhost', path: '/', method: 'GET',
+			    headers: {Accept: 'text/html'}},
+			    function (response) {
+				console.log(response.statusCode);
+			    }
+			);
+			request.end();
+	
+	streams

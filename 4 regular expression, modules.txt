@@ -1,0 +1,45 @@
+1. regular expressions
+	creating
+		var re1 = new RegExp('abc');
+		var re2 = /abc/;	// the two approaches have different ways dealing with special characters
+	testing
+		/abc/.test('abcde')	// true, meaning that the string contains a match of the pattern
+		/abc/.exec('abcde')	// returns an object with information about the match
+	so useful! but also complicated
+
+2. modules
+	JavaScript itself provides no actual module construct
+		but objects can be used to create publicly accessible subnamespaces
+		and functions can be used to create an isolated, private namespace inside of a module
+
+	use functions as namespaces
+		functions are the only things in js that create a new scope
+		if you only want to spill one function to the global scope as API
+			put all other things in side the fuction so that they're not visible
+		if you do not want others to use anything at all
+			(function() { // do all your things })();
+		but if you want to spill more than one functions
+			you cannot use this approach, cuz very likely you will need to use shared variables in the functions
+			instead, use objects as interfaces
+
+	objects as interfaces
+			var objectToSpill = function() {
+				// ...
+				return {
+					function1: function(){},
+					function2: function(){}
+				};
+			}();
+		// or define this exported object (usually named exports) at the beginning, and then add properties to it in the a function when needed
+			var exports = {};
+			(function() {
+				exports.function1 = ...
+			})();
+	
+	in node.js, this style of module system is called CommonJS modules
+		you export like this
+			// in hello.js
+			function f(){}
+			module.exports = f;
+		you import like this
+			var f = require('./hello')
