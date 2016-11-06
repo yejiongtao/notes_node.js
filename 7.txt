@@ -1,0 +1,12 @@
+1. ZMQ library (zero message queue)
+	installation
+		install the base library from its homepage or from your package manager
+		install zmq module through npm
+
+	advantages of ZMQ
+		ZMQ endpoints automatically reconnect
+		ZMQ delivers only whole messages
+		ZMQ's low-overhead protocol takes care of many routing detals
+			like sending responses back to the correct clients
+	
+page 43 55/143
