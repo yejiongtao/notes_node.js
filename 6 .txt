@@ -47,7 +47,87 @@ reading Node.js the Right Way, Practical, Server-Side JavaScript That Scales
 		use asynchronous ones
 		(actually, I think in some cases, you may use synchronous operations in this phase as well, to perform some necessary tasks)
 
-6. 
+6. networking with sockets
+	TCP sockets
+		server
+			const net = require('net');
+			const server = net.createServer(function(connection) {
+				// called whenever other connects
+				// connection is a Socket object
+				connection.write('Hello');
+				connection.on('close', function() {
+					console.log('Subscriber disconnected.');
+				});
+				// Socket objects are both readable and writable
+			});
+			server.listen(5444, function() {
+				// called when sucessfully bonded. can be omitted
+			});
+		
+		use telnet to establish a connection
+			telnet localhost 5432
+			// to quit, ctrl + ], then quit
 
+		client
+			const client = require('net').connect({port: 5432});	// a Socket object
+			client.on('data', function(data) {
+				// ...
+			});
+			// you should also listen to 'end' and 'error' events
+		
+		message-boundary problem
+			a big issue when using low-level sockets
+				one message could be split, and multiple messages could arrive together
+			one feasible approach
+				add a end-of-message symbol, such as '\n'
+				and then use a buffer to receive and re-construct messages
 
+	Unix sockets
+		a more efficient way for processes on the same computer to communicate
+			but only work on Unix-like environments
+			faster than TCP sockets because they don't require invoking network hardware
 
+		code
+			server.listen('/tmp/1.sock', function(){});
+		use nc to estabilsh a connection
+			nc is short for netcat
+				a TCP/UDP socket utility program that also supports Unix sockets
+			nc -U /tmp/1.sock
+	
+7. setTimeout()
+	const timer = setTimeout(function(){}, 1000);
+	clearTimeout(timer);
+		// useful when there's a race condition between the operations in timer's funtion and others
+		// e.g. clear it when a network connection is closed, to avoid using a closed connection in the function
+	
+	const interval = setInterval(function(){}, 1000);
+		// called every 1000 miliseconds
+	clearInterval(interval);
+
+8. inheritance in Node
+	e.g. class MyEmitter inherits from EventEmitter
+		const events = require('events');
+		const util = require('util');
+		const MyEmitter = function() {
+			events.EventEmitter.call(this);
+			// call the EventEmitter constructor on 'this'
+			// roughly equivalent to calling super() in other languages
+		};
+		util.inherits(MyEmitter, events.EventEmitter);
+			// makes MyEmitter's prototypal parent object the EventEmitter prototype
+		
+		const emitter = new MyEmitter();
+		emitter.on('mytype', function (data) {
+			// register for a event type from emitter
+			console.log('this is data: ' + data);
+		});
+		emitter.emit('mytype', 'hello');
+		// emit a event manually
+
+9. 'this' in JavaScript
+	in js, the value of 'this' is assigned inside each function when it's invoked, at runtime
+		it's not tightly bound to any particular object like in classical languages
+		it's more like a special variable
+	so we have to be careful about 'this' in js, especially when nested funtions are involved
+		a good idea is to set a separate variable pointing to 'self' at the beginning, to guarantee we're referring to the correct object
+			const self = this;

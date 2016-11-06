@@ -8,6 +8,9 @@
 	so useful! but also complicated
 
 2. modules
+	(the followings are suitable under the case that using js in browsers, because you'll load multiple js files in one page, so you should hide the variables if you don't want other js files to use them.)
+		but in Node.js, you cannot acess variables in another file unless they're exported, so it's not necessary to do the followings
+
 	JavaScript itself provides no actual module construct
 		but objects can be used to create publicly accessible subnamespaces
 		and functions can be used to create an isolated, private namespace inside of a module
