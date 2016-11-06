@@ -63,8 +63,14 @@ reading http://eloquentjavascript.net/
 			so do not ommit the semicolon
 	variables
 		var x = 1, y = '';
+        const z = 2;
 		// it's better to use var every time you declare a variable
 		// so that declaration can be seperated from assignment
+
+        let x = 1;
+        // difference between let and var
+        // they are the same in the global scope and in a function
+        // but in a scope like a for loop, let creates a local variable but those created by var can be accessed outside of this scope
 	console.log()
 		most JavaScript systems, including all modern web browsers and Node.js, provide this function
 			in browsers, the output lands in the JavaScript console (inside development tools)

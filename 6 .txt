@@ -10,7 +10,44 @@ reading Node.js the Right Way, Practical, Server-Side JavaScript That Scales
 		其实所谓多线程也都是排队，而且线程太多的话切换会花费很大
 			所以一般线程数与CPU线程数相当为佳（一个线程跑在多个CPU线程上也没办法很好利用CPU的多线程）
 		Node.js 就干脆单线程，利用async IO 把等待的时间都利用起来
+		it's pretty common in Node development to spawn separate processes as a way of breaking up work
 
-2. dealing with file system
-	
+2. spawning a child process
+	const spawn = require('child_process').spawn;
+	var ls = spawn('ls', ['-l', 'mydir']);	// returns the child process
+	ls.stdout.pipe(process.stdout);		// its stdin, stdout, stderr properties are Streams
+
+3. capturing data from an EventEmitter
+	EventEmitter provides a channel for events to be dispatched and listeners notified
+		many objects in Node inherit from EventEmitter, such as Streams
+		we can add listeners to those extended from EventEmitter
+	e.g.
+		var ls = require('child_process').spawn('ls');
+		ls.stdout.on('data', function(chunk) {
+			output += chunk.toString();
+		});
+		ls.on('close', function() {	// CHildProcess also extends EventEmitter
+			// ...
+		});
+
+4. Buffer
+	represents binary data
+		is a blob of memory allocated by Node, outside of the JavaScript engine
+	can't be resized and require encoding and decoding to convert to and from JavaScript strings
+		toString() converts to a string using Node's default encoding (utf-8)
+			this means copying the content into Node's heap, which can be slow
+			so if you can, work with buffers directly, but strings are more convenient
+		
+5. asynchronous vs synchronous file-system manipulations
+	in the initialization phase of a program, if something goes wrong, it's better to fail fast
+		here is the only time you should consider synchronous file access
+		you can use synchronous operations to avoid race conditions in this phase
+			e.g. require() is designed synchronous
+	in the operation phase, the program is on the event loop
+		use asynchronous ones
+		(actually, I think in some cases, you may use synchronous operations in this phase as well, to perform some necessary tasks)
+
+6. 
+
+
 

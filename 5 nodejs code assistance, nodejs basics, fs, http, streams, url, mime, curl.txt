@@ -13,6 +13,9 @@
 		process.exit(code)	// exit the node process
 		process.argv		// get the command-line arguments
 					// the actual arguments start at index 2
+		process.stdout		// the writable stream towards the command line output
+			process.stdout.write() is similar to console.log()
+			but console.log() adds a new line
 		the global scope object is called 'global' on Node, instead of 'window' in browsers
 
 	modules
@@ -39,6 +42,9 @@
 
 			// write to a file
 			// if a string is given instead of Buffer, it will write to the file using its default encoding utf-8
+			fs.writeFile('file.txt', 'this is content', function(err) {});
+			// will create the file if it doesn't exist, or overwrite it if it does
+
 		other usage
 			readdir()	get the files in a directory
 			stat()		retrieve information about a file
@@ -46,6 +52,11 @@
 			unlink()	remove a file
 			readFileSync()	many of the functions come in both asynchronous and synchronous variants
 			watch()		call the callback if the file changes
+			copy()
+			mkdir()
+			chmod()
+			// Node's fs module has many methods that map nicely onto POSIX conventions
+				POSIX is a family of standards for interoperability between operating systems
 
 	the http module (https module is similar)
 		server
@@ -77,6 +88,8 @@
 					// both write() and end() can also be passed to a callback function, which is called when the action is finished
 			fs.createWriteStream() creates a stream that points to a file
 					so that you can write the file one piece at a time
+			pipe()
+				pipe a stream directly to another stream
 
 		readable streams
 			reading from a stream is done using event handlers, rather than methods
@@ -88,6 +101,7 @@
 				'data' is fired every time some data comes in
 				'end' is fired whenever the stream is at its end
 			(a file can be read as a readable stream using fs.createReadStream())
+
 			e.g. in a http server
 				http.createServer(function(request, response) {
 				    response.writeHead(200, {"Content-Type": "text/plain"});
