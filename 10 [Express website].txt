@@ -1,0 +1,140 @@
+1. Express 默认项目目录结构
+	bin		启动项目的脚本文件，默认www
+	node_modules	项目依赖库
+		bodyParser	用来解析客户端请求的body中的内容
+		cookieParser	中间件用于获取浏览器发送的cookie的内容
+		debug		可用来打印至console
+		jade		一个高性能的模板引擎
+		morgan		打印的nodejs服务器接收到的请求的信息
+		serve-favicon	favicon服务中间件和缓存
+	public		静态资源文件夹
+	routes		路由文件，相当于MVC中的Controller
+	views		页面文件，MVC中的View，Ejs模板或jade模板
+	package.json	项目依赖以及开发者信息
+	app.js		应用核心配置文件，项目入口
+
+2. routing
+	app.get('/', function(req, res) {	// app is an instance of express
+		res.send('Hello!');
+	});
+	request methods
+		app.post, app.delete, app.put, and many others
+		app.all responses to all request methods
+	
+	route paths
+		can be strings, string patterns, or regular expressions
+	
+	route parameters
+		are named URL segments used to capture the values specified at their position in the URL
+			the captured values are in the req.params object
+
+		e.g. 
+			Route path: /users/:userId/books/:bookId
+			Request URL: http://localhost:3000/users/34/books/8989
+			req.params: { "userId": "34", "bookId": "8989" }
+
+		e.g. the hyphen (-) is interpreted literally
+			Route path: /flights/:from-:to
+			Request URL: http://localhost:3000/flights/LAX-SFO
+			req.params: { "from": "LAX", "to": "SFO" }
+
+		e.g. the dot (.) is also interpreted literally
+			Route path: /plantae/:genus.:species
+			Request URL: http://localhost:3000/plantae/Prunus.persica
+			req.params: { "genus": "Prunus", "species": "persica" }
+
+	route handlers
+		can be in the form of a function, an array of functions, or combinations of both
+		e.g. more than one callback functions (make sure to specify the next object)
+			app.get('/', function(req, res, next) {
+				next();		// pass to the next callback
+			}, function(req, res) {});
+
+		e.g. an array of callbacks
+			app.get('/', [cb1, cb2, cb3]);
+			// next() must be invoked in cb1 and cb2
+
+	response methods
+		one of these methods must be called to terminate the request-response cycle
+			otherwise, the client request will be left hanging
+			and only one of these methods should be called
+		
+		res.download()		prompt a file to be downloaded
+		res.end()		end the response process
+		res.json()		send a JSON response
+		res.jsonp()		Send a JSON response with JSONP support.
+		res.redirect()		Redirect a request.
+		res.render()		Render a view template.
+		res.send()		Send a response of various types.
+		res.sendFile()		Send a file as an octet stream.
+		res.sendStatus()	Set the response status code and send its string representation as the response body
+
+	app.route()
+		to create chainable route handlers for a route path
+			app.route('/')
+				.get(function(req, res) {})
+				.post(fucntion(req, res) {})
+
+	express.Router
+		used to create modular, mountable route handlers
+			a Router instance is a complete middleware and routing system
+		create a router as a module
+			var express = require('express')
+			var router = express.Router()
+
+			// middleware that is specific to this router
+			router.use(function timeLog (req, res, next) {
+			  console.log('Time: ', Date.now())
+			  next()
+			})
+
+			// define the home page route
+			router.get('/', function (req, res) {
+			  res.send('Birds home page')
+			})
+			// define the about route
+			router.get('/about', function (req, res) {
+			  res.send('About birds')
+			})
+
+			module.exports = router
+
+		load the router module in the app
+			var birds = require('./birds')
+			// ...
+
+			app.use('/birds', birds)
+			// the app will now be able to handle requests to /birds and /birds/about, as well as call the timeLog middleware function that is specific to the route
+
+3. serving static files
+	use the express.static built-in middleware function
+		app.use(express.static('public'));
+		// pass in the name of the directory that contains the static assets
+		// you can call this multiple times to set multiple directories
+	then you can load the files
+		http://localhost:3000/images/cat.jpg
+		// the name of the static directory is not part of the url
+	create a virtual path prefix
+		app.use('/static', express.static('public'));
+		// http://localhost:3000/static/image/cat.jpg
+	the path you provide is relative to the directory from where you launch the node process
+		it's safer to provide the absolute path
+		app.use('/static', express.static(path.join(__dirname, 'public')));
+		// __dirname is the absolute path of the current module
+
+4. handling 404 responses
+	in Express, 404 responses are not the result of an error, so the error-handler middleware will not capture them
+		cuz a 404 response simply indicates the absence of additional work to do
+		Express has executed all middleware functions and routes
+			and found that none of them responded
+	what you need to do is add a middleware function at the very bottom of the stack to handle a 404 response
+		app.use(function(req, res, next) {
+			res.status(404).send('not found');
+		});
+
+5. setup an error handler
+	you define error-handling middleware in the same way as other middleware, except with 4 arguments instead of 3
+		app.use(function(err, req, res, next){
+			console.error(err.stack);
+			res.status(500).send('Something broke.');
+		});
