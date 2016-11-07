@@ -1,0 +1,141 @@
+1. ZMQ library (zero message queue)
+	installation
+		install the base library from its homepage or from your package manager
+		install zmq module through npm
+
+	advantages of ZMQ
+		ZMQ endpoints automatically reconnect
+		ZMQ delivers only whole messages
+		ZMQ's low-overhead protocol takes care of many routing detals
+			like sending responses back to the correct clients
+	
+	ZMQ supports a number of different message-passing patterns
+		publish/subscribe pattern (PUB/SUB)
+			PUB
+				const publisher =  require('zmq').socket('pub');
+				publisher.bind('tcp://*:5432', function(err) {
+					// listening
+				});
+				// call publisher.send() any time you want
+
+			SUB
+				// we can't use telnet to connect to a zmq server
+				// it requires a zmq client because of its high-performance binary protocol
+				const subscriber = require('zmq').socket('sub');
+				subscriber.subscribe('');	// subscribe to all messages. you must call this function
+					// you can provide a string as a prefix filter
+				subscriber.on('message', function(data){});
+				subscriber.connect('tcp://localhost:5432');
+
+			from zmq's perspective, it doesn't matter which endpoints starts up first
+				and it automatically reestabilshes the connection
+			either PUB or SUB can do both bind() and connect()
+				the flow of messages is decided by the socket types, not which socket happens to bind or connect
+		
+		request/reply pattern (REQ/REP)
+			(a request comes in, then a reply goes out. additional requests are queued and later dispatched by ZMQ)
+
+			REP
+				const responder = require('zmq').socket('rep');
+				responder.on('message', function(data) {
+					// responder.send() to reply
+				});
+				responder.bind('tcp://127.0.0.1:5432', function(err) {});
+				process.on('SIGINT', function() {
+					// this Unix signal indicates that the process has received an interrupt signal from the user
+					responder.close();	// close it when the Node process ends
+				});
+
+			REQ
+				const requester = require('zmq').socket('req');
+				requester.on('message', function(data) {
+					// handle the reply
+				});
+				requester.connect('tcp://localhost:5432');
+				requester.send('');	// send request
+
+			the REQ/REP pair makes request/reply logic easy to code by operating sequentially
+				a requester or responder will only ever be aware of one message at a time
+			for parallel message processing, we use ROUTER and DEALER
+		
+		routing and dealing messages (actually is also REQ/REP pattern)
+			a ROUTER socket is like a parallel REP socket
+				rather than replying to only one message at a time, it can handle many requests simultaneously
+				it remembers which connection each request came from and will route reply messages accordingly
+			a DEALER is like a parallel REQ socket
+			they are a facility between REQ and REP
+				a REQ sends a request to ROUTER
+				ROUTER bounces it over to DEALER
+				DEALER picks one of the REP and sends the request to it
+				DEALER bounces the reply from REP to ROUTER
+				ROUTER looks at the message's frames to determine the origin 
+					and sends back to the REQ
+			example
+				const cluster = require('cluster');
+				const zmq = require('zmq');
+
+				if(cluster.isMaster) {
+					// master process, create ROUTER and DEALER, bind endpoints
+					// usually we use ROUTER and DEALER to bind sockets, because they are the center
+					// and use REQ and REP to connect
+
+					let router = zmq.socket('router').bind('tcp://127.0.0.1:5432');
+					let dealer = zmq.socket('dealer').bind('ipc://1.ipc');
+					// IPC is backed by a Unix socket
+
+					// forward messages between router and dealer
+					router.on('message', function() {
+						let frames = Array.prototype.slice.call(null, arguments);
+						dealer.send(frames);
+					});
+					dealer.on('message', function() {
+						let frames = Array.prototype.slice.call(null, arguments);
+						router.send(frames);
+					});
+
+					for(let i = 0; i<3; i++)
+						cluster.fork();
+				} else {
+					// worker process, create REP socket, connect to DEALER
+					let responder = zmq.socket('rep').connect('ipc://1.ipc');
+
+					responder.on('message', function(date) {
+						// responder.send()
+					});
+				}
+		
+		PUSH/PULL pattern
+			useful when you have a queue of jobs to fairly assign among a pool of available workers
+				pusher will distribute a message to one of the connected pullers
+				but there's no backchannel, meaning the puller can't send a response back through the same socket
+			
+			two problems
+				the first-joiner problem
+					establishing connections take time
+						so maybe all jobs will be sent to the first PULLer, when others are still on the process of connecting
+					so solve it, you provide a way for workers to annouce they are ready
+						one feasible way is to use PUSHer as a PULLer, use PULLer as a PUSHer, to send messages from the workers to the master
+				the limited-resource problem
+					when the system is out of resources (file descriptors in Unix), jobs start to fail
+			
+2. clustering Node.js processes
+	Node.js uses a single-threaded event loop
+		so to take advantage of multiple cores or multiple processors, we have to spin up more Node processes
+	fork()
+		creates a worker process running the same script as the original
+			const cluster = require('cluster');
+			if(cluster.isMaster) {
+				for(let i = 0; i < 10; i++)
+					cluster.fork();
+			} else {
+				// do the work
+			}
+	the worker processes can communicate with the master process through various events
+		master can listen for workers coming online
+			cluster.on('online', function(worker) {
+				console.log(worker.process.pid + ' is online.');
+			});
+		listen for workers exiting
+			cluster.on('exit', function(worker, code, signal) {});
+			// signal is like SIGINT or SIGTERM
+			

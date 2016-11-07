@@ -27,6 +27,7 @@
 	installing with NPM
 		NPM is an online repository of JS modules, many of which are specially written for Node
 		e.g. npm install figlet	// figlet can convert text into ASCII drawings
+			(will download the module to a folder called node_modules under the current directory)
 
 	the file system module
 		basic usage
