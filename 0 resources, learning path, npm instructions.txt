@@ -27,4 +27,8 @@
 	npm install express --save-dev
 		save the dependency as development dependency
 
+3. todo
+	mysql Á¬½Ó³Ø
+	docker
+	memory cache
 

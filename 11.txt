@@ -1,0 +1,122 @@
+1. handling 404 responses
+	in Express, 404 responses are not the result of an error, so the error-handler middleware will not capture them
+		cuz a 404 response simply indicates the absence of additional work to do
+		Express has executed all middleware functions and routes
+			and found that none of them responded
+	what you need to do is add a middleware function at the very bottom of the stack to handle a 404 response
+		app.use(function(req, res, next) {
+			res.status(404).send('not found');
+		});
+
+2. setup an error handler
+	conventions
+		you define error-handling middleware in the same way as other middleware, except with 4 arguments instead of 3
+			app.use(function(err, req, res, next){
+				console.error(err.stack);
+				res.status(500).send('Something broke.');
+			});
+		you define error-handling middleware last, after other app.use() and routes calls
+		you can define several error-handling middleware functions
+	
+	next()
+		if you pass anything to next() (except 'route'), Express regards the current request as being in error and will skip any remaining non-error handling routing  and middleware functions
+
+	defualt error handler
+		there's a default error-handling middleware function at the end of the middleware function stack
+			the error will be written to the client
+
+		if you call next() with an error after you have started writing the response
+			the Express default error handler closes the connection and fails the request
+			so when you add a custom error handler, you may want to do:
+				function errorHandler (err, req, res, next) {
+				  if (res.headersSent) {
+				    return next(err)	// delegate to the default handler
+				  }
+				  res.status(500)
+				  res.render('error', { error: err })
+				}
+	
+3. writing middleware
+	middleware functions 
+		are functions that have access to the request object, the response object, and the next middleware function in the application's request-response cycle
+	middleware functions can perform the following tasks
+		execute any code
+		make changes to the request and the response objects
+		end the request-response cycle
+		call the next middleware in the stack
+			if the current middleware function does not end the request-response cycle, it must call next() to pass control to the next one
+			otherwise the request will be left hanging
+	
+	route handlers are also middleware functions
+	the order of middleware loading is important
+		var myLogger = function(req, res, next) {
+			console.log('LOGGED');
+			next();
+		};
+
+		app.use(myLogger);	// load the middleware function
+			// cannot be after the routes, because the route handlers terminate the request-response cycle
+		app.get('/', function(req, res) {});
+
+4. using middleware
+	express is a routing and middleware web framework that has minimal functionality of its own
+		an Express application is essentially a series of middleware function calls
+	
+	an Express application can use the following types of middlewares
+		application-level middleware
+			bind to an app object using app.use() and app.METHOD()
+			e.g. 
+				app.use(function(req, res, next) {})
+					executed every time the app receives a request
+				app.use('/user', function(req, res, next) {})
+					binds to a certain path
+				app.get('/', function(req, res) {})
+
+		router-level middleware
+			works in the same way as application-level middleware
+				except it is bound to an instance of express.Router()
+				load via router.use() and router.METHOD()
+			
+		error-handling middleware
+			takes four arguments
+				you must always provide four arguments to identify it as an error-handling middleware function
+				even if you don't need to use the next object
+		
+		built-in middleware
+			most of the built-in middleware functions that were previously inclued in Express are now in seperate modules
+				except express.static()
+
+		third-party middleware
+			commonly used middleware
+				http://expressjs.com/en/resources/middleware.html
+
+5. using template engines
+	a template engine enables you to use static template files in the app
+		at runtime, the template engine replaces variables in the template file with actual values
+		and transforms the template into an HTML file
+
+	popular template engines that work with Express
+		Pug (Jade), Mustache, EJS
+	
+	to use
+		set up template engines, set some application setting properties in app.js
+			app.set('views', path.join(__dirname, 'views'));
+			app.set('view engine', 'jade');		// use 'pug' for latest updates
+				// you don't have to load the template engine module
+				// Express loads it internally
+		
+		create a jade file
+			// index.jade
+			html
+			  head
+			    title= title
+			  body
+			    h1= message		// h1 message will directly print out 'message'
+			    p welcome to #{title}
+		
+		render the jade file
+			res.render('index', {title: 'Hey', message: 'Hello!' });
+
+	you can use app.engine() to develop your own template engines
+		http://expressjs.com/en/advanced/developing-template-engines.html
+

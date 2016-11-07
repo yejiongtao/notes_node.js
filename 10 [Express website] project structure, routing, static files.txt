@@ -106,6 +106,25 @@
 			app.use('/birds', birds)
 			// the app will now be able to handle requests to /birds and /birds/about, as well as call the timeLog middleware function that is specific to the route
 
+	next('route')
+		skip to the next route
+			works only in middleware functions that were loaded by using the app.METHOD() or router.METHOD() functions
+		e.g.
+			app.get('/user/:id', function (req, res, next) {
+			  // if the user ID is 0, skip to the next route
+			  if (req.params.id === '0') next('route')
+			  // otherwise pass the control to the next middleware function in this stack
+			  else next()
+			}, function (req, res, next) {
+			  // render a regular page
+			  res.render('regular')
+			})
+
+			// handler for the /user/:id path, which renders a special page
+			app.get('/user/:id', function (req, res, next) {
+			  res.render('special')
+			})
+
 3. serving static files
 	use the express.static built-in middleware function
 		app.use(express.static('public'));
@@ -122,19 +141,3 @@
 		app.use('/static', express.static(path.join(__dirname, 'public')));
 		// __dirname is the absolute path of the current module
 
-4. handling 404 responses
-	in Express, 404 responses are not the result of an error, so the error-handler middleware will not capture them
-		cuz a 404 response simply indicates the absence of additional work to do
-		Express has executed all middleware functions and routes
-			and found that none of them responded
-	what you need to do is add a middleware function at the very bottom of the stack to handle a 404 response
-		app.use(function(req, res, next) {
-			res.status(404).send('not found');
-		});
-
-5. setup an error handler
-	you define error-handling middleware in the same way as other middleware, except with 4 arguments instead of 3
-		app.use(function(err, req, res, next){
-			console.error(err.stack);
-			res.status(500).send('Something broke.');
-		});
