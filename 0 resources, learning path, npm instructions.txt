@@ -27,6 +27,9 @@
 	npm install express --save-dev
 		save the dependency as development dependency
 
+	npm install -g nodeunit
+		install it globally
+
 3. npm MSBUILS error
 	错误：找不到MSBUILD version 2.0
 		解决：设置使用其他版本

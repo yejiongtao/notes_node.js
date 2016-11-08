@@ -1,1 +1,105 @@
-1. chapter 5 accessing databases
+1. CouchDB
+	it uses REST for everything
+	there's significant overlap between the Node.js core developer group and the CouchDB community
+		you send JSON documents to it
+		npm itself uses CouchDB extensively
+			the metadata about modules in npm is stored and queried in CouchDB
+	GUI
+		http://127.0.0.1:5984/_utils
+
+	making REETful requests
+		RESTful datastores like CouchDB use a different HTTP method for each operation
+			POST to create
+			GET to read
+			PUT to update
+			DELETE tp delete
+		
+		module 'request' makes it eaiser than module 'http'
+			const request = require('request');
+			const options = {
+				method: process.argv[2] || 'GET',
+				url: 'http://localhost:5984/' + (process.argv[3] || '')
+			};
+			request(options, function(err, res, body) {
+				if(err)
+					throw Error(err);
+				else
+					console.log(res.statusCode, JSON.parse(body));
+					// the returned body is JSON
+			});
+
+2. parsing XML
+	use 'cheerio' module
+	example
+		const fs = require('fs');
+		const cheerio = require('cheerio');
+
+		module.exports = function(filename, callback) {
+			fs.readFile(filename, function(err, data) {
+				if(err) return callback(err);
+				let $ = cheerio.load(data.toString());
+				// this object works like the jQuery global function $
+				// it provides methods for querying and modifying elements
+
+				let collect = function(index, elem) {
+					return $(elem).text();
+				};
+				// a utility method for extracting an array of text nodes from a set of element nodes
+
+				callback(null, {
+					_id: $('pgterms\\:ebook').attr('rdf:about').replace('ebooks/', ''),
+					title: $('dcterms\\:title').text(),
+					authors: $('pgterms\\:agent pgterms\\:name').map(collect),
+					subjects: $('[rdf\\:resource$="/LCSH"] ~ rdf\\:value').map(collect)
+				});
+			});
+		};
+
+3. unit test
+	most popular unit-testing frameworks available through npm
+		mocha, vows, nodeunit
+	
+	nodeunit
+		run nodeunit through node
+			node $(which nodeunit) test/
+			// test/ is a directory to test
+			// all the experts in the directory will be tested
+		e.g. in a js file in test/
+			exports.test1 = function(test) {
+				test.expect(2);	// 2 tests
+				test.deepEqual(a, b, 'should be equal!!');
+				test.ifError(err);
+				test.done();
+			};
+
+4. read json file
+	var o = require('1.json');
+	// the json object will be automatically paresd
+
+5. crawling a directory
+	'file' module's walk() can traverse a directory tree and call a callback for each file it finds
+		file.walk('dir1', function(err, dirPath, dirs, files) {
+			files.forEach(function(path) {
+				// path is the path of a file
+			});
+		});
+
+6. limited-resource problem (EMFILE error)
+	occurs when you exhaust the number of file descriptors available on the system (typically just over 10,000)
+		due to Node.js' asynchronous IO, and the fact that opening files is time consuming
+			it's likely for this problem to occur cuz a large amout of file descriptors will be requested in a short time
+	
+	fixes
+		increase the max number of file descriptors
+			just a temporary approach
+		retry when an EMFILE error occurs
+			'graceful-fs' module does this
+		work queuing
+			queue the tasks in queue
+				and let the queue throttle the number of	concurrently running tasks
+
+7. work queuing
+	use 'async' module
+
+	page 77
+
