@@ -27,8 +27,14 @@
 	npm install express --save-dev
 		save the dependency as development dependency
 
+3. npm MSBUILS error
+	错误：找不到MSBUILD version 2.0
+		解决：设置使用其他版本
+			npm config set msvs_version 2012 --global
+
 3. todo
 	mysql 连接池
 	docker
 	memory cache
+
 

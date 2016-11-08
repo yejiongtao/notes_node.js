@@ -95,3 +95,43 @@
 	form(method='post', enctype='multipart/form-data')
 		input(type='file', name='file1')	// the name is necessary
 		button(type='submit') upload
+
+7. HTTPS
+	to get a SSL/TLS certificate from a CA
+		Let's Encrypt	// a non-profit organization that provides free certificate
+		ACME
+			Let’s Encrypt uses the ACME protocol to verify that you control a given domain name and to issue you a certificate
+			list of ACME clients
+				https://letsencrypt.org/docs/client-options/
+				Certbot is only for Unix-like OS
+				zerossl.com is convenient
+				letsencrypt-express can refresh the certificat automatically
+					check out the instructions on the website
+			you need a under-control domain to get the certificate
+		Let's Encrypt requires refreshment of your certificate every 90 days
+
+		once you have the certificate
+			// curl -k https://localhost:8000/
+			const https = require('https');
+			const fs = require('fs');
+
+			const options = {
+			  key: fs.readFileSync('test/fixtures/keys/agent2-key.pem'),
+			  cert: fs.readFileSync('test/fixtures/keys/agent2-cert.pem')
+			};
+
+			https.createServer(options, (req, res) => {
+			  res.writeHead(200);
+			  res.end('hello world\n');
+			}).listen(8000);
+	
+	use a self-generated certificate for deveopment use
+		install openssl to generate
+		command
+			openssl genrsa -out privatekey.pem 1024
+				// private key
+			openssl req -new -key privatekey.pem -out certsign.csr
+				// CSR
+			openssl x509 -req -in certsign.csr -signkey privatekey.pem -out certificate.crt
+				// certificate
+			// 如果出现无法访问配置文件，则用 -config 路径，提供openssl安装目录下的配置文件路径
