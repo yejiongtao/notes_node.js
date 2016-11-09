@@ -1,0 +1,75 @@
+1. db-migrate
+	https://db-migrate.readthedocs.io/en/latest/search/
+	run
+		db-migrate	// or node node_modules/db-migrate/bin/db-migrate
+
+	configuration
+		// you can put this database.json in the root directory
+		// and call db-migrate there, then the migrations will be in migrations/
+		{
+		  "defaultEnv": "dev",
+
+		  "dev": {
+		    "driver": "sqlite3",
+		    "filename": "~/dev.db"
+		  },
+
+		  "prod": {
+		    "driver": "mysql",			// npm install --save db-migrate-mysql
+		    "host": "localhost",
+		    "user": { "ENV" : "DB_USER" },	// it will search for "DB_USER" environment variable
+				// to set environment variable on windows: 'set DB_USER=yejiongtao'
+		    "password" : { "ENV" : "DB_PASS" },
+		    "database": "database-name",
+		    "multipleStatements": true		// set true to support multiple statement in mysql
+		  },
+
+		  "mongo": {
+		    "driver": "mongodb",
+		    "database": "my_db",
+		    "host": "localhost"
+		  }
+		}
+
+		// then you can specify a configuration
+		db-migrate up --config config/database.json -e prod
+			// by default, it uses 'dev'
+
+		// you can use NODE_ENV to specify
+		"defaultEnv": {"ENV": "NODE_ENV"}
+			// equals to "defaultEnv": "dev" if you set NODE_ENV to development
+
+	commands
+		db-migrate up			do migrations
+		db-migrate down
+		db-migrate create		create a migration file
+		db-migrate db:create A_DB	create a database
+		db-migrate db:drop A_DB
+		db-migrate up:test		only do the migrations in test/
+			every scope (sub-folder) can have its own config.json
+			which can specify some configurations used in this scope
+				e.g. "database": "another database"
+			
+	to use
+		you put things inside the migration file
+			exports.up = function(db) {
+				db.createTable('table1', {
+					id: { type: 'int', primaryKey: true },
+					name: 'string'
+				});
+			};
+		then call 'up' to execute
+		SQL APIs
+			createTable, renameTable, addColumn, addIndex, addForeignKey, insert, runSql
+		supported data type
+			db-migrate-shared/data_type.js
+
+2. NODE_ENV
+	a enviroment variable (by convention) to state whether a particular environment is a production or a development environment
+		make sure to set it to production when releasing the program
+		add the environment variable in the run configuration window
+	
+
+
+
+

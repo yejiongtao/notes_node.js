@@ -46,3 +46,9 @@
 			module.exports = f;
 		you import like this
 			var f = require('./hello')
+
+3. module() in Node.js
+	each file is an instance of module
+		the instance exists even after the file finishes executing
+	loaded modules will be cached
+		so a module is actually a singleton

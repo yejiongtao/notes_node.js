@@ -40,4 +40,5 @@
 	docker
 	memory cache
 
+	ssl certificate
 

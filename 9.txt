@@ -1,0 +1,54 @@
+1. crypto
+	https://nodejs.org/dist/latest-v6.x/docs/api/crypto.html
+	use it to cipher and decipher using aes-256-cbc
+		in a stream way
+			const crypto = require('crypto');
+			const cipher = crypto.createCipher('aes-256-cbc', 'a password');
+
+			var encrypted = '';
+			cipher.on('readable', function () {
+			    var data = cipher.read();
+			if (data)
+			    encrypted += data.toString('hex');	// a string in hex
+			});
+			cipher.on('end', function(){
+			    console.log(encrypted);
+			});
+
+			cipher.write('some clear text data');
+			cipher.end();
+
+
+			const decipher = crypto.createDecipher('aes-256-cbc', 'a password');
+
+			var decrypted = '';
+			decipher.on('readable', function () {
+			    var data = decipher.read('utf8');
+			    if(data)
+				decrypted += data.toString();
+			});
+			decipher.on('end', function(){
+			    console.log(decrypted);
+			});
+			decipher.write(encrypted, 'hex');	// have to specify hex
+			decipher.end();
+		
+		in a synchronous way
+			var crypto = require('crypto');
+			var cipher = crypto.createCipher('aes-256-cbc', 'this is key');
+			var plain = 'Hello World!';
+
+			var crypted = cipher.update(plain, 'utf8', 'hex');
+			crypted += cipher.final('hex');
+			console.log(typeof crypted);
+			console.log('crypted: ' + crypted);
+			crypted += 0;
+			console.log('crypted: ' + crypted);
+
+			var decipher = crypto.createDecipher('aes-256-cbc', 'this is key');
+			var decrypted = decipher.update(crypted, 'hex', 'utf8');
+			decrypted += decipher.final('utf8');
+			console.log('decrypted: ' + decrypted);
+	
+	if fail to decrypt, will throw an error
+
