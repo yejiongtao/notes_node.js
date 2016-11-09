@@ -99,7 +99,16 @@
 				and let the queue throttle the number of	concurrently running tasks
 
 7. work queuing
-	use 'async' module
-
-	page 77
+	'async' module
+		offers low-overhead mechanisms for managing asynchronous code
+		we use its queue() to limit the number of parallel work
+	code
+		work = require('async').queue(function(x, done) {
+			// do the task
+			done();	// to signal to the queue that it's free to dequeue
+			// it's common for the last argument to a callback to be a 'done' or 'next'
+		}, 1000);
+		for(let i=0; i<10000; i++) {
+			work.push(i);	// push the task to the queue
+		}
 
