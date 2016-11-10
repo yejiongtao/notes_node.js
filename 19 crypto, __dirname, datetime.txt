@@ -58,3 +58,17 @@
 		because the relative path it relative to the location you call 'node'
 	use path.resolve()
 		require('path').resolve(__dirname, '../myFolder');
+
+3. datetime
+	use Date to get the current datetime
+		new Date()
+		// but there's no much you can do with it, like formatting
+	use module 'moment'
+		moment().format()
+		// now you can use it along with mysql's datetime type
+			var now = moment().format('YYYY-MM-DD HH:mm:ss')
+		// parse a datetime
+			var then = moment('1995-09-09 12:01:01')
+		// compare two times
+			moment().isBefore(Moment|String|Number|Date|Array)
+

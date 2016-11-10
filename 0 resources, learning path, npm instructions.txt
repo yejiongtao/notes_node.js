@@ -36,9 +36,8 @@
 			npm config set msvs_version 2012 --global
 
 3. todo
-	mysql Á¬½Ó³Ø
 	docker
 	memory cache
 
-	ssl certificate
+	forever module
 

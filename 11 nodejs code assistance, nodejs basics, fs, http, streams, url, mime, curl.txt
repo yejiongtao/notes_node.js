@@ -125,5 +125,5 @@
 3. curl
 	a command-line tool, widely available on Unix-like systems, can be used to make HTTP requests
 	post, https with self-signed certificate, json
-		C:\Users\Administrator>curl -X POST -H "'Content-type':'application/json', 'charset':'utf-8', 'Accept': 'text/plain'" -d 'json_data={"a":"aaa"}' https://localhost:4002/verify
-
+		// behaves oddly in Windows terminal. in a Unix-like system:
+		curl -X POST -H "Content-Type: application/json" --data '{"hello":"hi"}' https://snake000.com:4002/verify
