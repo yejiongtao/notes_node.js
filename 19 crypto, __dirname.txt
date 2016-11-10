@@ -52,3 +52,9 @@
 	
 	if fail to decrypt, will throw an error
 
+2. __dirname
+	the directory name of the current module
+	should use this instead of relative path!
+		because the relative path it relative to the location you call 'node'
+	use path.resolve()
+		require('path').resolve(__dirname, '../myFolder');

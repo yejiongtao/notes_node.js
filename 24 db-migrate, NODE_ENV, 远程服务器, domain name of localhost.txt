@@ -69,7 +69,17 @@
 		make sure to set it to production when releasing the program
 		add the environment variable in the run configuration window
 	
+3. 关于远程服务器
+	xShell
+		supports SSH, telnet
+		can easily connect to and manage your server using it
+		can also easily upload files
 
+	webstorm Tools > Development -> Configuration -> add a web server
+		then you can easily upload files to your server by right-clicking
 
-
-
+4. domain name of localhost
+	for development purposes, you may want to use a domain name to access your website instead of localhost or 127.0.0.1
+	to do that, add a line to the end of 
+		// C:\Windows\System32\drivers\etc\hosts
+		127.0.0.1	www.mine.com
