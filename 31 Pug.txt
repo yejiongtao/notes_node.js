@@ -1,0 +1,106 @@
+1. pug (jade's new name.)
+	don't have to rely on express
+		var html = require('pug').render(fs.readFileSync('1.pug'));
+		// pug.compile() returns a function that takes data and produces html
+
+	attributes
+		basic
+			a(class='button', href='google.com') Google
+				// <a class="button" href="google.com">Google</a>
+			- var auth = true
+			body(class= auth ? 'authed' : 'no')
+				// all normal js expressions work fine
+		
+		multiline attributes
+			input( type='checkbox'
+				name = 'agreement')	// multiline of attributes is allowed
+			input( data-json=
+				{
+					"long": "json"
+				}
+			)
+		
+		quoted attributes
+			div('(click)' = 'play()')	
+				// quote the odd attribute (click) to avoid interference with js
+		
+		attribute interpolation
+			-var btnType = 'info'
+			button(class = 'btn btn-' + btnType)
+
+		unescaped attributes
+			div(escaped="<code>")
+				// <div escaped="&lt;code&gt;"></div>
+			div(unescaped!="<code>")
+				// <div unescaped="<code>"></div>
+				// unescaped buffered code can be dangerous
+			
+		boolean attributes
+			// boolean attributes are mirrored by Pug
+			input(checked)		// equals to checked=true
+				// <input checked="checked" />
+			input(checked = false)
+				// <input/>
+			input(checked = 'true')	// string
+				// <input checked="true" />
+
+		style attributes
+			// can be an object
+			a(style = { color: 'red', background: 'green'})
+			
+		class attributes
+			// can be an array of class names
+			- var classes = ['foo', 'bar']
+			a(class = classes)
+			a(class = classes, class = ['bing'])	// merges two arrays
+			a(class = {active : currentUrl === 'about'})
+				// class='active' when currentUrl === 'about'
+		
+		class literal
+			a.button	// <a class="button"></a>
+			.content	// <div class="content"></div>
+				// cuz <div> is such a common choice of tag
+		
+		ID literal
+			a#main-link	// <a id="main-link"></a>
+			#content
+		
+		&attribute
+			// used to explode an object into attributes of an element
+			- var attrs = { hello: 'hi'}
+			div(class='good')&attributes(attrs)
+
+	case
+		- var num = 10
+		case num
+			when 0	// only when there's nothing here will it falls through
+			when 1
+				p very few friends
+			default
+				p #{num} friends	// equals to p = num + 'friends'
+
+	code
+		unbuffered code 
+			// starts with '-', does not add output directly
+			- for(var i=0; i<4; i++)
+				li		// must begin with a blank
+
+			// block
+			-	// the next few lines beginning with blanks will be together
+				list = ["Uno", 
+				'Dos']
+			each item in list	// mustn't begin with '-'
+				li= item
+			
+		buffered code
+			// starts with '=', and outputs the result of evaluating the js expression
+			p = 'hello<a>'		// hello&lt;a&gt;
+			
+		unescapsed buffered code
+			// starts with '!='
+			p != 'hello<a>'		// hello<a>
+
+	comments
+				
+
+

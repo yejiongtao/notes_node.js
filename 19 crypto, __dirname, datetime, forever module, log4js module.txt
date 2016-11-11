@@ -72,3 +72,45 @@
 		// compare two times
 			moment().isBefore(Moment|String|Number|Date|Array)
 
+4. forever module
+	a simple CLI tool for ensuring that a given node script runs forever
+		module 'forever-monitor' runs in the code
+	basic usage
+		forever start 1.js
+		forever stopall
+		forever list
+		// there will be a log file for each launched script, containing those would have been printed out to the console
+
+5. log4js module
+	vs debug module
+		debug module cannot define the level of loggings, so it's only suitable for development
+	to use	
+		var conf = {
+		    appenders: [
+			{ type: 'console' },
+			{
+			    type: 'file',
+			    filename: 'logs/verify.log',
+			    category: 'verify',		// used to identify it
+			    maxLogSize: 10240,	// max size of each file
+			    backups: 10		// max number of files. will start to cover if all these files are filled
+			}
+		    ],
+		    levels: {
+			'[all]': 'ALL'		
+			// verify: 'ERROR', then it only logs ERROR and FATAL
+		    }
+		};
+		log4js.configure( conf, {reloadSecs: 300});	
+			// will scan periodically and reload the configuration file if needed
+			// but only work when the configuration file is json
+
+		var verifyLogger = log4js.getLogger('verify');
+		verifyLogger.info('hello');
+		verifyLogger.warn('huh');
+		verifyLogger.error('dead');
+	
+		// use to logger http logs
+		app.use(log4js.connectLogger(verifyLogger));
+		
+		

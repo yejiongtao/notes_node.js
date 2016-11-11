@@ -5,8 +5,8 @@
 		they are turned off by default
 		and can be conditionally turned on by using the DEBUG environment variable
 	to show the log
-		DEBUG=express:* node index.js
-		// DEBUG=express:router to see logs onlu from the router implementation
+		DEBUG=* node index.js
+		// DEBUG=express:router to see logs only from the router implementation
 
 2. Express behind proxies
 	when running an Express app behind a proxy, set the application variable 'trust proxy' to one of the followings

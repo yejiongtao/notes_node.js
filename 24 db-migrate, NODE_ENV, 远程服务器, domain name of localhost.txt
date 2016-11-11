@@ -33,7 +33,7 @@
 
 		// then you can specify a configuration
 		db-migrate up --config config/database.json -e prod
-			// by default, it uses 'dev'
+			// you must specify -e if you are not using defaultEnv
 
 		// you can use NODE_ENV to specify
 		"defaultEnv": {"ENV": "NODE_ENV"}
