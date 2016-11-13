@@ -1,1 +1,87 @@
-1. ReduceMap
+1. node start
+	in package.json
+		"scripts": {
+			"start": "node .bin/www"
+		}
+	you can add commands to it, e.g. setting environment variables
+		you can also add more scripts
+			"test": "node test"
+
+2. nodemon module
+	'node monitor', runs a Node.js program
+		and automatically restarts it whenever the source code changes
+
+3. promises with Q
+	callbacks are not suitable for some situations
+		if we have several functions that should be executed sequentially, and the later one depends on the former one
+			using callbacks, we end up with lots of nested calls
+				fs.readFile(MrFileFirst,"utf8",function(err,data1){
+					if(err){
+						//do err thing
+					}else{
+						fs.readFile(MrFileSecond,"utf8",function(err,data2){
+							if(err){
+								//do err thing
+							}else{
+								// ...
+							}
+						})
+					}
+				})
+		
+		if we have a final task should be executed when an array of tasks are done
+			we also have to do it like above, which totally becomes synchronous
+
+	using async
+		async has lots of methods to use
+			some can surely be used in these situations
+			e.g. parallel() for the second situation
+	
+	using promises with kriskowal's Q
+		Q.fcall(function(a) { return a+1; }, 10)
+			.then(	// then(onFulfilled, onRejected, onProgress)
+				function(args) { console.log(args)})
+					// args is the result of the last function
+			.then(anotherFunc)
+			.catch(	// equals to then(undefined, onRejected)
+					// will deal with the errors
+				function(err) {})
+			.done()	// done(onFulfilled, onRejected, onProgress)
+					// but will throw errors if they are not handled. so we usually put a done() in the end
+		
+		// nfcall() is for the Node.js-style functions
+		// Nodejs-style functions are different because they are asynchrous
+		// they have callback functions in the form of function(err, data)
+		Q.nfcall(fs.readFile, '1.txt')
+			.then(function(text) {})
+			.done()
+		
+		Q.all([func1(), func2(), func3('hello')])
+				// will execute them in parallel
+			.done(function(values) {})
+				// values[0] is the result of func1
+
+4. yeilding control with generators
+	(from EcmaScript 6)
+	a generator is like a function 
+		except that you can suspend its execution and resume later
+	
+	example
+		const countdown = function*(count) {	// generator function
+			while (count > 0) {
+				yield count;	// sends the value and pauses
+				count -= 1;
+			}
+		};
+		const counter = countdown(5);
+		const callback = function () {
+			let item = counter.next();
+			if (!item.done) {
+				console.log(item.value);
+				setTimeout(callback, 1000);
+			}
+		};
+		callback();
+
+	generators and asynchronous code
+		???

@@ -112,3 +112,9 @@
 			work.push(i);	// push the task to the queue
 		}
 
+8. callback chaining with async.waterfall
+	async.waterfall() executes a sequence of asynchronous functions
+	takes two arguments
+		an array of functions to execute sequentially
+			the last argument of each function is a 'next' callback to pass result forward into the next function
+		a summary function to call when everything is finished
