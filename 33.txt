@@ -1,0 +1,74 @@
+1. Bootstrap & Bootstrap-table
+	there are so many examples on its website
+		check them out and you'll know how to use
+
+	Bootstrap-table: a very easy-to-use plug-in
+		also check its website to see how to use
+
+2. pagination using Bootstrap-table
+	front-end pagination
+		when you not much data, say less than 1000
+		you fetch all data at once from backend
+			pros: global searching is supported
+	
+	back-end pagination
+		pug page
+			table(data-toggle='table'
+                            data-url='http://snake000.com:4002/verify/data'
+				// will send a GET request when needed
+                            data-pagination="true"
+                            data-search="true"
+                            data-height="500"
+                            data-show-refresh="true"
+				// when clicked, a new request will be made
+                            data-side-pagination='server'
+                            data-page-list="[5, 10, 20, 50, 100, 200]")
+                            thead
+                                tr
+                                    each col in columnNames
+                                        th(data-field= col)= col
+					// data-fields must be the same as those in the returned json
+		
+		router file
+			router.get('/', function (req, res, next) {
+			    var sql = 'select COLUMN_NAME from information_schema.columns' +
+				' where table_name=\'client_info\'';	// get the column names
+			    query(sql, function (err, rows, fields) {
+				if(err)
+				    throw err;
+
+				var columnNames = rows.map(function (x) {
+				    return x.COLUMN_NAME;
+				});
+
+				// give the column names to the pug function to render
+				res.send(pugFuncVerify({argColumnNames: columnNames}));
+			    });
+			});
+
+			router.get('/data', function (req, res, next) {
+			    var offset = parseInt(req.query.offset);
+			    var limit = parseInt(req.query.limit);
+			    // the GET request has some query parameters concerning paging
+
+			    var sql = mysql.format('select * from client_info limit ?,?',
+				[offset, limit]);	// paging request in mysql
+
+			    query(sql, function (err, rows, fields) {
+				if(err)
+				    throw err;
+
+				var sql = 'select count(*) from client_info';	// total number of records
+				query(sql, function (err, count, fields) {
+				    res.send({
+					total: count[0]['count(*)'],
+					rows: rows
+				    });
+				    // send a json directly, must contain these two attributes
+				});
+			    });
+			});
+
+
+
+

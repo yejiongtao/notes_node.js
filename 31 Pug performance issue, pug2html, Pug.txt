@@ -1,4 +1,23 @@
-1. pug (jade's new name.)
+1. Pug performance issue
+	because it's totally different from html, so it takes time to render
+		can be around 8 times slower than EJS
+	to fix
+		pre-compile the pug file into a JS function
+		e.g.
+			// routes/index.js
+			...
+			var pugFunc = pug.compileFile(file);
+			router.get('/', function(req, res, next) {
+				res.send(pugFunc({ arg1: 'hello' }));
+			})
+	// actually in this way, the followings are useless
+		app.set('views', path.join(__dirname, 'views'));
+		app.set('view engine', 'pug');
+
+2. html to pug
+	http://www.html2jade.org/
+
+3. pug (jade's new name.)
 	don't have to rely on express
 		var html = require('pug').render(fs.readFileSync('1.pug'));
 		// pug.compile() returns a function that takes data and produces html
@@ -101,6 +120,8 @@
 			p != 'hello<a>'		// hello<a>
 
 	comments
-				
-
+		// this is comment
+		//
+			this is 
+			block comment
 

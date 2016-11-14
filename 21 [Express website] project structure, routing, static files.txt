@@ -42,6 +42,10 @@
 			Route path: /plantae/:genus.:species
 			Request URL: http://localhost:3000/plantae/Prunus.persica
 			req.params: { "genus": "Prunus", "species": "persica" }
+	
+	query parameters
+		// http://localhost?id=12
+		req.query is {id: '12'}
 
 	route handlers
 		can be in the form of a function, an array of functions, or combinations of both

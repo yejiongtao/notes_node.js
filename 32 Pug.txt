@@ -1,0 +1,95 @@
+1. Pug
+	conditionals
+		var a = false
+		#user
+			if a
+				h2 hello
+			else
+				h2 hi
+		// <div id="user"><h2>hi</h2></div>
+	
+		unless a
+			p hello
+
+	doctype
+		doctype html PUBLIC "-//W3C//DTD XHTML Basic 1.1//EN"
+		// or you can specify it in the js code
+		pug.render(source, { doctype: 'html' })
+
+	extends
+		// layout.pug
+		doctype html
+		html
+			head
+				block title
+					title Default title	// <title>
+			body
+				block content
+		// index.pug
+		extends layout.pug
+		block title
+			title Artical
+		block content
+			h1 My Article
+
+		// block append/prepend
+		extends layout.pug
+		block prepend content
+			h2 this will be after the h1
+		
+	filters
+		let you use other languages within a Pug template
+
+	includes
+		allow you to insert the contents of one Pug file into another
+			e.g. you can put the commonly used head and footer in seperate files
+		include files that are not Pug just includes the raw text
+			so actually you can include any files
+	
+	interpolation
+		string interpolation
+			p my name is #{me.name}		// it's js inside
+			p my name is !{me.name}		// not escaped, can be dangerous
+		tag interpolation
+			p hello #[strong Tau]	// <p>hello <strong>Tau</strong></p>
+
+	iteration
+		// the object or array to iterate over is just plain js
+		each
+			ul
+			    each val, index in [1,2,3]	// 'index' is optional
+			        li= val
+			    else
+			        li there are no values	// if there's no value
+			ul
+			    each val, index in {'hi': '1', 2: 'hello'}
+				// index is key
+		while
+			while n<4
+			    li= n++
+
+	mixins, allow you to create reuseable blocks of Pug
+		mixin list(id, ...items)	// with vary number of arguments
+		    ul(id=id)
+		        each item in items
+			    li= item
+		+list('my-list', 1,2,3,4)	// use it
+	
+	plain text
+		piped text
+			| this is plain text
+		inline in a tag
+			p this is plain text
+		block in a tag
+			p.	// without the '.', the following block will be evaluated 
+				// instead of treated as plain text
+				this is
+				plain text
+
+2. passing arguments to pug
+	pug.render(source, {hello: 'hi'})
+
+	// inside Pug file
+	-var hello1 = hello	// you put all arguments at the top of the file,
+				// so that it's easy for the user to know what to pass in
+	h1= hello1
