@@ -86,6 +86,11 @@
 				this is
 				plain text
 
+	embeded JS
+		script.
+			console.log('this is js');
+			// WebStorm will treat this block as JS and provide code assistance
+
 2. passing arguments to pug
 	pug.render(source, {hello: 'hi'})
 

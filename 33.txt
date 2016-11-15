@@ -3,7 +3,7 @@
 		check them out and you'll know how to use
 
 	Bootstrap-table: a very easy-to-use plug-in
-		also check its website to see how to use
+		http://bootstrap-table.wenzhixin.net.cn/zh-cn/examples/
 
 2. pagination using Bootstrap-table
 	front-end pagination
@@ -22,7 +22,12 @@
                             data-show-refresh="true"
 				// when clicked, a new request will be made
                             data-side-pagination='server'
-                            data-page-list="[5, 10, 20, 50, 100, 200]")
+				// by default, it is client-side pagination
+                            data-page-list="[5, 10, 20, 50, 100, 200]"
+			    data-show-toggle="true"
+                            data-show-columns="true"
+				// can select what columns to show
+			    )
                             thead
                                 tr
                                     each col in columnNames
@@ -68,7 +73,50 @@
 				});
 			    });
 			});
+	
+	attention
+		if you set data-side-pagination='server'
+		pagination, searching, ordering will all on server side
+			a GET request with some query arguments will be sent
 
+3. Editable with Bootstrap Table
+	use the extension https://github.com/wenzhixin/bootstrap-table/tree/master/src/extensions/editable
+		a plug-in which applys X-editable on Bootstrap Table
 
+	use JS to set up the table or just put a data-editable='true' property to a column
+		http://vitalets.github.io/x-editable/docs.html#editable
+		there are many options you can set, just use data-editable-* as prefix
+	
+	listen to certain jQuery events
+		// you can find those events on the website
+		script(src='http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js')
+			// you must import jQuery before using $
+		script.
+		    $(function () {
+			// '#table' is the id of your table
+			$('#table').on('editable-save.bs.table', function ($e, field, row, oldVal) {
+			    console.log($e);
+			    console.log(field);
+			    console.log(row);
+			    console.log(oldVal);
+			})
+		    })
 
+4. Action + Service + DAO
+	definition
+		Action	管理Service调度和管理跳转的
+		Service	满足Action转达的需求，实施具体的功能
+		DAO	满足Service的需求，完成数据库相关的增删改查
+		
+	Struts + Hibernate + Spring
+		Struts		起控制作用，即Action
+		Spring		负责业务层管理，即Service
+		Hibernate	数据持久化层，完成数据库的CRUD操作，定义DAO接口
+			根据数据库的表，反向生成实体类，里面还有关系，使得数据库操作很方便
+		
+		这个系统中对象的调用流程一般是
+			JSP -- Action -- Service -- DAO -- Hibernate
+
+	使用Express快速开发的时候，方便起见可以把Action和Service合并
+		但 DAO 要单独出来，因为数据库是很可能会改变的
 
