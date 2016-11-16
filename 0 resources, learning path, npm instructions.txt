@@ -38,4 +38,6 @@
 3. todo
 	docker
 	memory cache
+	nginx
+
 
