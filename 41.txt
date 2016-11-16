@@ -1,0 +1,11 @@
+1. CSS
+	use border-radius to make a circle picture
+		<style>
+			.circle {
+				border-width: 0;
+				border-radius: 50%;
+			}
+		</style>
+
+
+

@@ -83,5 +83,3 @@
 	to do that, add a line to the end of 
 		// C:\Windows\System32\drivers\etc\hosts
 		127.0.0.1	www.mine.com
-
-5. module forever

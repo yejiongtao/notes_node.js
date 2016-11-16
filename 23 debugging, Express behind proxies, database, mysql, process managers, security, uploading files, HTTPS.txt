@@ -142,3 +142,9 @@
 
 	BUT! a more common approach is to configure the SSL certificate on Nginx
 		and there are scripts on the internet to do this automatically
+
+	attention
+		if you are using https, all the links in your web page must use https
+			e.g. the link to jQuery
+		script(src='//cdn.bootcss.com/jquery/1.11.1/jquery.min.js')
+			a short-cut to acheive this
