@@ -7,5 +7,11 @@
 			}
 		</style>
 
-
-
+2. form
+	use HTML5 to require a field
+		<input type="text" required>
+	radio buttons
+		// each should in its own <label>
+		// all should have the same name
+		<label><input type="radio" name="indoor-outdoor">Indoor</label>
+		<label><input type="radio" name="indoor-outdoor">Outdoor</label>

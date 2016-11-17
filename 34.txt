@@ -1,0 +1,20 @@
+1. 相对路径与绝对路径
+	html中的都要写成绝对路径！
+		包括href、src
+	src中 / 指的是你static resources的位置
+	href中 / 指的是网站的首页
+
+2. use ajax to upload file
+	see crash.pug in liscenceServer
+
+3. use bootstrap on the file uploader
+	see crash.pug in liscenceServer
+
+4. use a column as a link
+	use formatter
+		th(data-field= col, data-formatter='nameFormatter')=col
+	js
+		function nameFormatter(value) {
+		    return '<a href="crash/files/' + value + '">' + value + '</a>';
+		}
+
