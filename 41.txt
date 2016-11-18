@@ -1,3 +1,9 @@
+0. resources
+	freecodecamp.com
+	Font Awesome icons
+	Animate.css
+	codepen.io
+
 1. CSS
 	use border-radius to make a circle picture
 		<style>
@@ -6,6 +12,15 @@
 				border-radius: 50%;
 			}
 		</style>
+	
+	if a tag has two classes, and the styles of the two classes conflit with each other
+		then the latter one in <style> will override the former one
+		// it doesn't matter in what order do they appear in the tag
+
+	id declarations always override class declarations
+	inline styles override CSS declarations in <style>
+	use !important to be 100% sure that it will be used
+		color: pink !important;
 
 2. form
 	use HTML5 to require a field
@@ -15,3 +30,90 @@
 		// all should have the same name
 		<label><input type="radio" name="indoor-outdoor">Indoor</label>
 		<label><input type="radio" name="indoor-outdoor">Outdoor</label>
+
+3. some Bootstrap CSS class
+	div.container-fluid
+		make the page auto-adjusted to the size of screens of different devices
+	img.img-responsive	
+		make the img auto-adjusted to the size of screens
+	h2.text-center
+		align the text to the center
+		text-primary
+	button.btn
+		Bootstrap's style of button
+		btn-block	the button will fill up the horizontal space
+		btn-primary	give it the primary color
+			btn-info	info color
+			btn-danger
+	div.row
+		put things in a row, with fair distances between each other
+	div.col-md-4.col-sm-4
+		Bootstrap uses 12-column layout
+		md means median, sm for small
+			you give it multiple classes, and then Bootstrap will automaitcally applt one in different resolution 
+	.well
+		create a visual sense of depth
+		
+	i.fa.fa-thumbs-up
+		using Font Awesome icons
+
+4. jQuery
+	// all jQuery functions start with a '$'
+	$(document).ready(function(){})
+		the function will run once the page is loaded
+		without this the script may run before the HTML is rendered
+			which may cause bugs
+
+	$("button").addClass("btn-default")
+		select all the <button>
+		select class
+			$(".myclass")
+		select id
+			$("#myid")
+
+	$("#btn1").css("color", "blue")
+		change the css directly
+
+	$("#btn1").prop("disabled", true)
+		change properties
+	
+	$("h1").html("<p>hi</p>")
+		replace the content of all <h1> to this
+	$("h1").text("<p>hi</p>")
+		just add plain text, will not evaluate the html tags
+
+	$("#btn1").remove()
+		remove it
+
+	$("#btn1").appendTo("#div1")
+		move $btn1 from wherever it is to #div1
+	$("#btn1").clone().appendTo("#div1")
+
+	$(#btn1).parent()
+	$(#btn1).children()
+	$(".class1:nth-child(2)")
+		the 2nd element with class 'class1'
+	$(".class1:odd")
+		all the odd-numbered elemetns with class 'class1' 
+
+5. jQuery with events
+	// also put these in the ready function
+	listen on click event
+		$("#btn1").on("click", function(){})
+
+	read JSON
+		$.getJSON("/json/cats.json", function(json) {
+		  $(".message").html(JSON.stringify(json));
+		});
+		// $ means it's a jQuery function
+
+	get location information
+		// modern browsers has a built in navigator
+		// this will prompt the user for the permission
+		if (navigator.geolocation) {
+		  navigator.geolocation.getCurrentPosition(function(position) {
+		    $("#data").html("latitude: " + position.coords.latitude + "<br>longitude: " + position.coords.longitude);
+		  });
+		}
+
+
