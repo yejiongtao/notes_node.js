@@ -30,6 +30,7 @@
 				})
 		
 		if we have a final task should be executed when an array of tasks are done
+			and those tasks have no dependencies on each other
 			we also have to do it like above, which totally becomes synchronous
 
 	using async
@@ -83,5 +84,22 @@
 		};
 		callback();
 
-	generators and asynchronous code
-		???
+	using generators with promises
+		let get = Q.denodeify(request.get);
+		let put = Q.denodeify(request.put);
+		// Q.denodeify takes a Node.js style function and returns a new promoise-producing function from it
+		// it's a convenient way to avoid calling Q.nfcall all over the place
+		// you just call the denodeified function to get promises
+
+		Q.async(function* () {
+			// Q.async returns a new promise-producing function that will start running the generator when you invoke it
+
+			// and then you can call denodeified functions here
+			args = yeild get('http://google.com');
+			// will yeild till the function finished
+
+			// you can check the result of the last yeild and decide whether to call the next one
+		})()
+		.catch(function(err) {});
+
+		// in this way, you can call pultiple asynchronous functions but make it look like synchronous
