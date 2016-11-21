@@ -1,4 +1,18 @@
-1. chapter 7
+1. storing sessions in Redis
+	session
+		data that's attached to a particular user
+		Express keeps session data in memory
+			but when you have multiple Node processes, the session data should be stored to a shared place
+		
+	enable sessions in Express
+		app.use(require('cookie-parser')());
+			// responsible for parsing incoming cookies from the client
+		app.use(require('express-session')({ secret: 'unguessable' }));
+			// stores the session data attached to the cookie
+			// 'secret' is used to sign the session cookies to prevent tampering and spoofing
+		
+	Redis
+		
 
 
 
