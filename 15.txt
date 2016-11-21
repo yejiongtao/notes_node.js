@@ -1,105 +1,74 @@
-1. node start
-	in package.json
-		"scripts": {
-			"start": "node .bin/www"
+0. node.js style function
+	those with a callback function in the form of function(err, result)
+
+1. async.waterfall()	串行有关联
+	async.waterfall() executes a sequence of asynchronous functions
+	takes two arguments
+		an array of functions to execute sequentially
+			the last argument of each function is a 'next' callback to pass result forward into the next function
+		a summary function to call when everything is finished
+
+	code
+		async.waterfall([
+		    function (done) {
+
+			done(null, 'one');
+		    },
+		    function (onearg, done) {
+
+			done(null, onearg + '| two');
+		    },
+		    function (twoarg, done) {
+
+			done(null, twoarg + '| three');
+		    }
+		], function (error, result) {
+		    console.log(result);
+		})
+
+2. async.parellel()	并行无关联
+	// suitable for those parellel tasks with a final task should be executed after they are done
+	var async = require('async');
+	async.parallel({
+	    one: function (done) {
+		require('fs').readFile('1.txt', function(err, text)) {
+			if(err)
+				done(err);
+			else
+				done(null, text);
 		}
-	you can add commands to it, e.g. setting environment variables
-		you can also add more scripts
-			"test": "node test"
+	    },
+	    two: function (done) {
+		//处理逻辑
+		done(null, 'tow');
+	    },
+	    three: function (done) {
+		//处理逻辑
+		done(null, 'three');
+	    }
+	}, function (error, result) {
+	    console.log('one:', result.one);
+	    console.log('two:', result.two);
+	    console.log('three:', result.three);
+	})
 
-2. nodemon module
-	'node monitor', runs a Node.js program
-		and automatically restarts it whenever the source code changes
-
-3. promises with Q
-	callbacks are not suitable for some situations
-		if we have several functions that should be executed sequentially, and the later one depends on the former one
-			using callbacks, we end up with lots of nested calls
-				fs.readFile(MrFileFirst,"utf8",function(err,data1){
-					if(err){
-						//do err thing
-					}else{
-						fs.readFile(MrFileSecond,"utf8",function(err,data2){
-							if(err){
-								//do err thing
-							}else{
-								// ...
-							}
-						})
-					}
-				})
-		
-		if we have a final task should be executed when an array of tasks are done
-			and those tasks have no dependencies on each other
-			we also have to do it like above, which totally becomes synchronous
-
-	using async
-		async has lots of methods to use
-			some can surely be used in these situations
-			e.g. parallel() for the second situation
-	
-	using promises with kriskowal's Q
-		Q.fcall(function(a) { return a+1; }, 10)
-			.then(	// then(onFulfilled, onRejected, onProgress)
-				function(args) { console.log(args)})
-					// args is the result of the last function
-			.then(anotherFunc)
-			.catch(	// equals to then(undefined, onRejected)
-					// will deal with the errors
-				function(err) {})
-			.done()	// done(onFulfilled, onRejected, onProgress)
-					// but will throw errors if they are not handled. so we usually put a done() in the end
-		
-		// nfcall() is for the Node.js-style functions
-		// Nodejs-style functions are different because they are asynchrous
-		// they have callback functions in the form of function(err, data)
-		Q.nfcall(fs.readFile, '1.txt')
-			.then(function(text) {})
-			.done()
-		
-		Q.all([func1(), func2(), func3('hello')])
-				// will execute them in parallel
-			.done(function(values) {})
-				// values[0] is the result of func1
-
-4. yeilding control with generators
-	(from EcmaScript 6)
-	a generator is like a function 
-		except that you can suspend its execution and resume later
-	
-	example
-		const countdown = function*(count) {	// generator function
-			while (count > 0) {
-				yield count;	// sends the value and pauses
-				count -= 1;
-			}
-		};
-		const counter = countdown(5);
-		const callback = function () {
-			let item = counter.next();
-			if (!item.done) {
-				console.log(item.value);
-				setTimeout(callback, 1000);
-			}
-		};
-		callback();
-
-	using generators with promises
-		let get = Q.denodeify(request.get);
-		let put = Q.denodeify(request.put);
-		// Q.denodeify takes a Node.js style function and returns a new promoise-producing function from it
-		// it's a convenient way to avoid calling Q.nfcall all over the place
-		// you just call the denodeified function to get promises
-
-		Q.async(function* () {
-			// Q.async returns a new promise-producing function that will start running the generator when you invoke it
-
-			// and then you can call denodeified functions here
-			args = yeild get('http://google.com');
-			// will yeild till the function finished
-
-			// you can check the result of the last yeild and decide whether to call the next one
-		})()
-		.catch(function(err) {});
-
-		// in this way, you can call pultiple asynchronous functions but make it look like synchronous
+3. async.series()	串行无关联
+	async.series({
+	    one: function (done) {
+		//处理逻辑
+		done(null, 'one');
+	    },
+	    two: function (done) {
+		//处理逻辑
+		done(null, 'tow');
+	    },
+	    three: function (done) {
+		//处理逻辑
+		done(null, 'three');
+	    }
+	}, function (error, result) {
+	    console.log('one:', result.one);
+	    console.log('two:', result.two);
+	    console.log('three:', result.three);
+	    console.timeEnd('series');
+	})

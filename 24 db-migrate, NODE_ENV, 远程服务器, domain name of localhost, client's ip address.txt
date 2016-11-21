@@ -83,3 +83,11 @@
 	to do that, add a line to the end of 
 		// C:\Windows\System32\drivers\etc\hosts
 		127.0.0.1	www.mine.com
+
+5. get client's ip address
+	function getClientIp(req) {
+		return req.headers['x-forwarded-for'] ||	// if reversed proxy is used
+		req.connection.remoteAddress ||
+		req.socket.remoteAddress ||
+		req.connection.socket.remoteAddress;	// req.connection.socket might be undefined.. ?
+	};

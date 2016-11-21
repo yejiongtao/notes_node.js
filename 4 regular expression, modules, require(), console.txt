@@ -52,3 +52,18 @@
 		the instance exists even after the file finishes executing
 	loaded modules will be cached
 		so a module is actually a singleton
+
+4. console
+	calculate time
+		console.time('my_tag');
+		console.timeEnd('my_tag');
+
+	used in browsers
+		console.trace();
+			print out the function calling trace
+		console.table(o);
+			print out the object in the form of table
+		console.profile()
+		console.profileEnd()
+			test each function's performance
+		
