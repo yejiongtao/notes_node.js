@@ -18,5 +18,39 @@
 		    return '<a href="crash/files/' + value + '">' + value + '</a>';
 		}
 
-5. mysql 
+5. mysql ≈˙¡ø≤Â»Î
+	insert one row at a time
+		5000 ms for 10000 records
+		the overhead of opening and closing connections is pretty large
+
+	insert into table1 values (), (), ()...
+		insert all rows at a time, 200 ms for 10000 records
+
+	load data infile
+		load data directly from a file, 100 ms for 10000 records
+		suitable when the data is in a file
+			LOAD DATA INFILE 'file_name'
+			[IGNORE | REPLACE]	// the way to deal with those with duplicated primary keys
+			[FIELDS
+				[TERMINATED BY 'string']
+				[ENCLOSED BY 'char']
+				[ESCAPED BY 'char']
+			]
+			[LINES
+				[STARTING BY 'string']
+				[TERMINATED BY 'string']
+			]
+			[IGNORE number LINES]
+			[(col1, @dummy, @var1 ...)]
+			[SET col3 = @var1/100, col4 = expr2, ...]
+
+		the file must in the directory specified by secure_file_priv
+			secure_file_priv is set in my.ini
+			to show the current setting
+				SHOW VARIABLES LIKE "secure_file_priv";
+			to find where the mysql data is saved
+				SHOW VARIABLES LIKE "datadir";
+
+
+
 

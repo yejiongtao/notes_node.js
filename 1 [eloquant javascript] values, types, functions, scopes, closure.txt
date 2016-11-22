@@ -4,6 +4,8 @@ reading http://eloquentjavascript.net/
 	six basic types of values in JavaScript
 		numbers
 			js uses 64 bits for each number
+				all numbers are treated as floatings
+				so the range of precise integers is -2^53 to 2^53
 			3 / 2	// 1.5
 				use Math.floor() to get 1
 			special numbers

@@ -104,6 +104,21 @@ reading Node.js the Right Way, Practical, Server-Side JavaScript That Scales
 		// called every 1000 miliseconds
 	clearInterval(interval);
 
+7.5 cron module
+	var CronJob = require('cron').CronJob;
+	var job = new CronJob({
+		cronTime: '00 30 11 * * 1-5',		// sec min hour date month weekday
+		onTick: function() {
+		    /*
+		     * Runs every weekday (Monday through Friday)
+		     * at 11:30:00 AM. 
+		     */
+		},
+		start: false,
+		timeZone: 'America/Los_Angeles'	// Asia/Shanghai
+	});
+	job.start();
+
 8. inheritance in Node
 	e.g. class MyEmitter inherits from EventEmitter
 		const events = require('events');

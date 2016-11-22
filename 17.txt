@@ -12,7 +12,13 @@
 			// 'secret' is used to sign the session cookies to prevent tampering and spoofing
 		
 	Redis
+		an extremely fast key/value store, with tunable durability
+			which means you can keep it fast but risk losing data if the server crashes
+				by default, it keeps data in memory and periodically writes it to disk
+				(lossing session data means the users must log in again, which is no big deal)
+			or you can sacrifice speed for greater durability guarantees
 		
+
 
 
 
