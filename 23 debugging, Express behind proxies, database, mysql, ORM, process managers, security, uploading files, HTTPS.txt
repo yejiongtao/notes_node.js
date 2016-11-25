@@ -65,6 +65,15 @@
 	prepare for a query
 		var sql = mysql.format('SELECT * from ?', ['table1])
 
+3.5 ORM (Object Relation Mapping)
+	a much easier way to deal with database
+	sequelize module
+		a promise-based Node.js/io.js ORM for Postgres, MySQL, MariaDB, SQLite and Microsoft SQL Server
+	waterline module
+		ORM for Redis, mySQL, LDAP, MongoDB, Postgres
+	mongoose module
+		MongoDB ODM
+
 4. process managers
 	to achieve the following tasks
 		restart the app automatically if it crashes

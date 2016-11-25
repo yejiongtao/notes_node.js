@@ -17,7 +17,8 @@
 				by default, it keeps data in memory and periodically writes it to disk
 				(lossing session data means the users must log in again, which is no big deal)
 			or you can sacrifice speed for greater durability guarantees
-		
+
+express-mysql-session
 
 
 
