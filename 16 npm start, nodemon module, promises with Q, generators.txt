@@ -1,4 +1,4 @@
-1. node start
+1. npm start
 	in package.json
 		"scripts": {
 			"start": "node .bin/www"

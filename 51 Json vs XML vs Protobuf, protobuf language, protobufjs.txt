@@ -1,0 +1,74 @@
+1. Json vs XML vs Protobuf
+	Json
+		human readable/editable
+		can be parsed without knowing schema in advance
+		excellent browser support
+		less verbose than XML
+	XML
+		human readable/editable
+		can be parsed without knowing schema in advance
+		standard for SOAP etc
+		good tooling support (xsd, xslt, sax, dom, etc)
+		pretty verbose
+	Protobuf
+		very dense data (small output)
+		hard to robustly decode without knowing the schema
+			(data format is internally ambiguous, and needs schema to clarify)
+		very fast processing
+		not intended for human eyes (dense binary)
+
+	all have good support on most platforms
+		if the consumer is a browser or a public API, Json is suggested
+		for internal APIs, (or also public APIs), Protobuf is suggested
+
+2. Protobuf language (proto2)
+	http://colobu.com/2015/01/07/Protobuf-language-guide/
+	basic
+		package foo;				// package 用来防止namespace冲突
+		import "other.proto"			// import 相当于复制过来
+		message MyMessage {
+			required string query = 1;	// 每个字段有一个唯一的数字标识符，一旦使用就不能改变。从1开始
+							// required，不建议使用，因为以后想不要可能会导致兼容问题
+			optional int32 page_number = 2 [default = 10];		// optional，0或1个
+							// repeated，0过多个
+			repeated YourMessage urMessage = 3;	// message中可以包含其他message
+		}
+		message YourMessage {			// 一个.proto文件可以有多个message
+			enum Corpus {
+				UNIVERSAL = 0;
+				WEB = 1;
+			}
+			optional Corpus corpus = 1 [default = UNIVERSAL];
+			message HisMessage {		// 嵌套
+			}
+		}
+
+	update （比如server改了，client虽然没改也能兼容）
+		不要修改任何一有字段的数值标识
+		所添加的必须是optional 或repeated 的，且最好有合理的默认值
+		非required 字段可以移除
+			但最好是改名字，比如家OBSOLETE_ 前缀，以避免它的数值标识不会被其他字段使用
+		int32, uint32, int64, uint64,和bool是全部兼容的
+		sint32和sint64是互相兼容的，但是它们与其他整数类型不兼容
+		string和bytes是兼容的——只要bytes是有效的UTF-8编码
+		fixed32与sfixed32是兼容的，fixed64与sfixed64是兼容的
+
+3. protobufjs
+	http://www.tuicool.com/articles/mqArUbI
+	code
+		var protobuf = require('protobufjs');
+
+		var builder = protobuf.loadProtoFile('hello.MyMessage.proto');
+		var MyMessage = builder.build('hello.MyMessage');
+
+		var message = new MyMessage({
+		    name: 'Tau',
+		    id: 2001
+		});
+		var buffer = message.encode();  // gets a ByteBuffer
+		buffer = buffer.toBuffer();     // gets a buffer
+		console.log('message', message);
+		console.log('buffer', buffer);
+		console.log('decoded', MyMessage.decode(buffer));
+
+
