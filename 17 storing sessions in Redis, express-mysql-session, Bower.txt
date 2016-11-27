@@ -17,10 +17,37 @@
 				by default, it keeps data in memory and periodically writes it to disk
 				(lossing session data means the users must log in again, which is no big deal)
 			or you can sacrifice speed for greater durability guarantees
+		
+		to use
+			install and start redis
+			install redis and connect-redis module
+			code
+				redisClient = require('redis').createClient();
+				RedisStore = require('connect-redis')(express);
+				app.use(session({
+					secret: 'this is key',
+					store: new RedisStore({
+						client: redisClient
+					})
+				}))
 
-express-mysql-session
+		handling errors
+			connect-redis is tolerant of Redis errors
+				which means it silently ignores it when Redis is unreachable
+			to deal with it by yourself
+				redisClient.on('error', function(err) {});
 
+2. express-mysql-session
+	store session data in mysql
 
+3. static content and Bower
+	app.use(express.static(__dirname + '/bower_components'));
+		if Express can't find a particular route, it'll fall back to serving the static content
+
+	Bower is a package manager for front-end code, like js libraries
+		bower install --save bootstrap
+		// it will be inside bower_components/
+		// then you can reference it in html
 
 
 
