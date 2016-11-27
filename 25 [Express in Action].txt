@@ -1,5 +1,38 @@
-1. 
+1. other web application frameworks
+	Hapi.js
+		a relatively small framework that has routing and middelware-like functionality
+		a pretty mature framework that used by Mozilla, OpenTable and npm registry, etc
+		probably Express's biggest competitor
 
+	Meteor
+		larger, full-stack framework
+			running code on both client and server side
+		Express is unopinionated about how you build your applications but Meteor has a strict structure
 
+	Kraken
+		techically just a middleware built otop Express 
+		sets up a lot of your application
+			from security defaults to bundled middleware
+	
+	Sails.js
+		another framework built atop Express that adds databases, WebSocket integration, API generators, an asset pipeline, and more
 
+	Connect
+		only the middleware layer
+			doesn't have routing or some additional APIs
+		Express once used Connect for its middleware layer
+			now Express middleware is completely compatible with Connect middleware
+	
+	outside the Node.js world
+		Ruby's Sinatra, Python's Bottle and Flask, PHP
+			similar to Express
+		Python's Django, Ruby on Rails, ASP.NET, Java's Play
+			more opinionated frameworks with lots of features
 
+2. MEAN stack
+	MongoDB (a javascript-friendly database)
+	Express
+	Angular (a front-end javascript framework)
+	Node.js
+
+3. 
