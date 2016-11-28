@@ -58,6 +58,7 @@
 		because the relative path it relative to the location you call 'node'
 	use path.resolve()
 		require('path').resolve(__dirname, '../myFolder');
+		// actually the reason using path.resolve() is to avoid using platform dependant path seperator '/' and '\'
 
 3. datetime
 	use Date to get the current datetime
