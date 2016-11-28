@@ -59,3 +59,15 @@
 	req.ip
 	req.get		// gets HTTP headers
 
+5. consolidate.js
+	a library that wraps a ton of view engines to be compatible with Express
+	e.g. to use Walrus with Express
+		// after npm install walrus consolidate
+		var engines = require('consolidate');
+		app.set('view engines', 'wal');		
+			// specifies .wal files as your default view file extension
+		app.engine('wal', engines.walrus);
+			// associates .wal files with the Walrus view engine
+		app.set('views', path.resolve(__dirname, 'views'));
+
+
