@@ -38,4 +38,24 @@
 3. helpful middlewares
 	connect-ratelimit
 		lets you limit connections to a certain number of requests per hour
+		if someone's sending numerous requests to your server
+			you can start giving them errors
+	Helmet
+		helps add HTTP headers to make your app safer against certain kinds of attacks
+	response-time
+		sends the X-Response-Time header so you can debug the performance of your app
+	compression
+		for compressing responses to save on bytes
+	connect-assets
+		compiles and minifies your CSS and js assets
+		it will also work with CSS preprocessors like SASS, SCSS, LESS and Stylus
+
+4. conveniences Express adds to Node.js
+	res.redirect
+	res.sendFile
+	res.status
+	res.send
+
+	req.ip
+	req.get		// gets HTTP headers
 

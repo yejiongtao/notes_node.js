@@ -49,8 +49,17 @@
 			var decrypted = decipher.update(crypted, 'hex', 'utf8');
 			decrypted += decipher.final('utf8');
 			console.log('decrypted: ' + decrypted);
-	
 	if fail to decrypt, will throw an error
+
+	more about crypto
+		this module is a set of wrappers for OpenSSL's functions
+		about initialization vector
+			aes-256-cbc requires a key and an iv
+			when using createCipher()
+				it uses one of OpenSSL's functions to generate the key and iv from the passphrase you give
+			when using createCipheriv()
+				you have to pass in the key and iv yourself
+				for different algorithms, the length of required key and iv varies
 
 2. __dirname
 	the directory name of the current module
