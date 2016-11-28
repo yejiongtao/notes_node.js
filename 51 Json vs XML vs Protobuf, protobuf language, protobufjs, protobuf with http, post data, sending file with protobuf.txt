@@ -71,4 +71,42 @@
 		console.log('buffer', buffer);
 		console.log('decoded', MyMessage.decode(buffer));
 
+4. sending protobuf with http
+	content-type: application/octet-stream
+		by setting this header, you are saying the body is pure binary data
+		(in http, different content-type results in different encoding/decoding and treatments on the data)
+	code
+		request.post({
+		    url: 'http://localhost:3000/upload',
+		    headers: { 'Content-type': 'application/octet-stream'},
+		    body: new Buffer([1,2,3])
+		}, callback);
+		// you cannot put the buffer as one of the field of a form, cuz http will try to decode it
 
+		// on the server side
+		req.on('data', function(chunk) {})	// append each chunk, and parse until 'end'
+		// because it's not key-value pair, so it cannot be parsed by body-parser
+
+5. two kinds of post data
+	a html form
+		thanks to body-parser, you can access the key-value pairs via req.body
+
+	a streamed post
+		// if the content is bytes
+		var dataArr = [], len = 0;
+		req.on('data', function (chunk) {
+			// Append data.
+			dataArr.push(chunk);
+			len += chunk.length;
+		});
+		req.on('end', function () {
+			var buf = Buffer.concat(dataArr, len);
+		});
+
+6. sending files as part of protobuf
+	define a field in .proto with type bytes
+	use the result of fs.readFileSync as buffer data
+	when receiving
+		var decoded = MyMessage.decode(buf);
+		var file = decoded.myFile.toBuffer();
+		fs.writeFileSync('1.txt', file);
