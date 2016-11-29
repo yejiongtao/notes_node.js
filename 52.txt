@@ -1,0 +1,84 @@
+1. 直播
+	HLS (HTTP Live Streaming)
+		将流媒体切成若干 TS 片段（如每10秒一段），然后通过一个扩展的 m3u 列表文件将这些 TS 片段几种起来供客户端播放器接收
+		pros
+			采用HTTP，不用考虑防火墙或代理的问题
+			使用小片段，有利于平滑切换码率，以及在视频中跳转
+			Apple开发，在iOS上有支持，无需自己开发播放器
+		cons
+			由于是不断下载小片段，所以会有20-30s延时，不适合需要实时互动体验的直播
+			基于短链接HTTP，每次建立TCP连接都会有消耗
+
+	RTMP (Real Time Messaging Protocol)
+		Adobe开发，从采集推流端到流媒体服务器，再到播放器是一条数据流，在服务器不会有落地文件
+		RTMP变种
+			RTMP	走TCP，默认端口1935
+			RTMPE	在RTMP基础上加密
+			RTMPT	封装在HTTP上，可穿透防火墙
+			RTMPS	封装在HTTPS上
+		pros
+			延时小，1-3s，适合直播
+			基于TCP长连接，不需要多次建连
+		cons
+			iOS平台上需要开发支持相关协议的播放器
+		延时
+			主要来自累积延时，因为是TCP的，所以当网络不好的时候会有包的堆积，等网络好了再一起发，造成延时
+
+	现在一般混着用，ios浏览器上用HLS，其他用RTMP
+
+	整个流程
+		http://blog.csdn.net/dj0379/article/details/51946664
+	阿里直播平台架构
+		http://blog.csdn.net/dj0379/article/details/52123055
+	
+2. video.js
+	download
+		CDN
+			<head>
+			  <link href="http://vjs.zencdn.net/5.8.8/video-js.css" rel="stylesheet">
+
+			  <!-- If you'd like to support IE8 -->
+			  <script src="http://vjs.zencdn.net/ie8/1.1.2/videojs-ie8.min.js"></script>
+			</head>
+		you can also download it via npm or bower
+	
+	to support HLS
+		videojs-contrib-hls
+
+3. 直播连麦技术（粉丝与主播进行语音或视频互动）
+	http://www.mamicode.com/info-detail-1444734.html
+	RTMP + RTMP
+		延迟叠加为 2-4s，不能接受
+
+	P2P + RTMP
+		主播与粉丝之间P2P通信，由主播统一用RTMP播送
+		pros	P2P延迟在几百毫秒级
+			有开源的 WebRTC
+		cons	只能有一个粉丝
+			主播要负责两路视频上传，一路视频下载，对网络要求较高
+
+	视频会议 + RTMP
+		pros	延迟一秒内
+			由会议系统负责上传播送，主播只负责视频会议交互的流量，网络要求不高
+			多人交互
+		cons
+			服务端增加了视频会议系统，开发复杂
+
+4. WebRTC
+	http://webrtc.org.cn/
+	https://webrtc.org/
+	pros
+		方便：内置于浏览器，不用安装插件或软件
+		免费
+		强大的打洞能力
+			WebRTC技术包含了使用STUN、ICE、TURN、RTP-over-TCP的关键NAT和防火墙穿透技术，并支持代理。
+	cons
+		缺乏服务器方案的设计和部署
+		传输质量难以保证
+			基于P2P，难以保证传输质量，优化手段也有限
+		比较适合单聊
+		设备端适配，如回声、录音失败等问题层出不穷
+		对Native开发支持不够，项目框架十分复杂
+	如果能力不够，可以考虑腾讯、网易等第三方音视频SDK
+
+5. RTMFP & MonaServer

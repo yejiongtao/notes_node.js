@@ -48,6 +48,13 @@
 		bower install --save bootstrap
 		// it will be inside bower_components/
 		// then you can reference it in html
-
-
+	
+	Bower vs npm
+		actually many libraries such as bootstrap can be installed via both npm and Bower
+		difference between them
+			npm 支持嵌套依赖
+				方便，但是可能会下载一些重复的东西
+				在服务器中无所谓
+			Bower 只支持扁平的依赖，嵌套的依赖由程序员自己解决
+				适合前端库，比如要确保各种各样的插件都依赖同一个版本的jQuery
 
