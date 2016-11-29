@@ -70,4 +70,22 @@
 			// associates .wal files with the Walrus view engine
 		app.set('views', path.resolve(__dirname, 'views'));
 
+6. MongoDB
+	a popular NoSQL database, with JavaScript used in its native shell
+	MongoDB basics
+		a database has several collections (a collection is like a table in SQL)
+		a collection has several documents (a document is like a record in SQL)
+		there's one document per thing, e.g. a user profile
+			but documents don't have to have the same properties, even if they're in the same collection
+		documents are BSON file, something like JSON
+			they're translated into JS objects before using
+		Mongo adds a unique _id property to every document
 
+7. Mongoose
+	creating schemas
+		// models/user.js
+		var userSchema = mongoose.Schema({
+			username: {type: String, required: true, unique: true},
+			createdAt: {type: Date, default: Date.now},
+			bio: String
+		});
