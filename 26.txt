@@ -17,3 +17,13 @@
 		});
 
 		// use bcrypt.compare instead of '===', to prevent timing attack
+
+2. TDD, test-driven development
+	write tests before developing
+		unsuitable when specifications are unclear
+	
+	code coverage
+		Istanbul, a Node code coverage tool
+
+3. Mocha testing framework
+

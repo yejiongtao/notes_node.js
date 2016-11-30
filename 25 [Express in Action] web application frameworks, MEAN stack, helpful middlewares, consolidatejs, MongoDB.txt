@@ -104,4 +104,23 @@
 		module.exports = User;
 
 	using the model
+		// in app.js
+		mongoose.connect('mongodb://localhost:27017/test');
+
+		// using it
+		var User = require('./models/user');
+		User.find()
+			.sort({createdAt: 'descending'})
+			.exec(function(err, users) {
+				if(err) { return next(err); }
+				// ...
+			});
 		
+		User.findOne({ username: 'Tau' }, function(err, user) {});
+			// if you provide a callback, then the query is executed immediately, instead of invoked by a exec()
+		
+		var newUser = new User({ username: 'Tau', password: 'p'});
+		newUser.save();
+
+
+
