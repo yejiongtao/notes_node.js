@@ -25,11 +25,16 @@
 			主要来自累积延时，因为是TCP的，所以当网络不好的时候会有包的堆积，等网络好了再一起发，造成延时
 
 	现在一般混着用，ios浏览器上用HLS，其他用RTMP
-
 	整个流程
 		http://blog.csdn.net/dj0379/article/details/51946664
 	阿里直播平台架构
 		http://blog.csdn.net/dj0379/article/details/52123055
+
+1.5 RTSP, RTMP, HTTP, 私有协议比较
+	无论哪一种效果都差不多
+	安防行业常用RTSP，因为一开始大家都用，已经几乎是一个标准了
+	国内互联网用RTMP，因为经过多年发展，很多CDN已经完美支持了
+	HTTP（HLS是其中一种），也有其优势，且发展较快
 	
 2. video.js
 	download
@@ -66,7 +71,13 @@
 
 4. WebRTC
 	http://webrtc.org.cn/
-	https://webrtc.org/
+	https://webrtc.org/start/
+	http://io13webrtc.appspot.com/
+	https://github.com/webrtc/samples
+	https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API
+		（要用https才行）
+		用的是RTP来传输（与RTSP一样），在UDP上
+
 	pros
 		方便：内置于浏览器，不用安装插件或软件
 		免费
@@ -81,4 +92,15 @@
 		对Native开发支持不够，项目框架十分复杂
 	如果能力不够，可以考虑腾讯、网易等第三方音视频SDK
 
-5. RTMFP & MonaServer
+	资源
+		一个最简单的例子 http://www.blogjava.net/linli/archive/2014/10/21/418910.html
+		public STUN or TURN servers http://stackoverflow.com/questions/20068944/webrtc-stun-stun-l-google-com19302
+		原理 http://blog.csdn.net/zeb_perfect/article/details/52869825
+		WebRTC-Experiment https://github.com/muaz-khan/WebRTC-Experiment
+
+5. 其他
+	RTMFP & MonaServer
+	国产开源流媒体框架 EasyDarwin
+	ffmpeg 可以用来加解码、推流（如rtmp等）
+		http://blog.leanote.com/post/visgee/%E7%94%A8ffmpeg%E8%BF%9B%E8%A1%8C%E7%9B%B4%E6%92%AD%E6%8E%A8%E6%B5%81
+

@@ -1,0 +1,115 @@
+1. WebRTC APIs
+	three main tasks
+		acquiring audio and video
+		communicating audio and video
+		communicating arbitrary data
+
+	so, three primary objects
+		MediaStream
+			represents a stream of audio and/or video
+				can contain multiple 'tracks'
+
+			obtain a MediaStream with navigator.getUserMedia()
+				var constraints = {video: true};	// controls the contents of the MediaStream
+
+				function successCallback(stream) {
+				  var video = document.querySelector("video");		// get the element
+				  video.src = window.URL.createObjectURL(stream);	// create a URL pointing to it
+				}
+
+				function errorCallback(error) {
+				  console.log("navigator.getUserMedia error: ", error);
+				}
+
+				navigator.getUserMedia(constraints, successCallback, errorCallback);
+
+			use contraints to control media type, resolution, frame rate
+				video: {
+				  mandatory: { minWidth: 640, minHeight: 360 },
+				  optional [{ minWidth: 1280, minHeight: 720 }]
+				}
+
+			with web audio
+				// Success callback when requesting audio input stream
+				function gotStream(stream) {
+				    var audioContext = new webkitAudioContext();
+
+				    // Create an AudioNode from the stream
+				    var mediaStreamSource = audioContext.createMediaStreamSource(stream);
+
+				    // Connect it to the destination or any other node for processing!
+				    mediaStreamSource.connect(audioContext.destination);
+				}
+
+				navigator.webkitGetUserMedia({audio:true}, gotStream);
+				// Make sure to enable Web Audio Input in about:flags!
+
+			screen capture
+				var constraints = {
+				  video: { mandatory: { chromeMediaSource: 'screen' }}
+				};
+
+				navigator.webkitGetUserMedia(constraints, gotStream);
+
+		RTCPeerConnection
+			it does a lot under the scene
+				signal processing to remove noise
+				codec selection, compression and decompression
+				peer to peer communication, through firewalls, NATs, etc
+				security
+				bandwidth management
+			
+			code
+				pc = new RTCPeerConnection(null);
+				pc.onaddstream = gotRemoteStream;
+				pc.addStream(localStream);
+				pc.createOffer(gotOffer);
+					// an SDP offer includes information about the WebRTC session, codec, etc, for the purpose of being sent over the signaling channel to a potential peer to request a connection or to update the configuration of an existing connection
+
+				function gotOffer(desc) {
+				  pc.setLocalDescription(desc);
+				  sendOffer(desc);
+				}
+
+				function gotAnswer(desc) {
+				  pc.setRemoteDescription(desc);
+				}
+
+				function gotRemoteStream(e) {
+				  attachMediaStream(remoteVideo, e.stream);
+				}
+
+		RTCDataChannel
+			properties
+				same API as WebSockets
+				ultra-low latency
+				choose unreliable or reliable
+				secure
+			
+			code
+				var pc = new webkitRTCPeerConnection(servers,
+				  {optional: [{RtpDataChannels: true}]});
+
+				pc.ondatachannel = function(event) {
+				  receiveChannel = event.channel;
+				  receiveChannel.onmessage = function(event){
+				    document.querySelector("div#receive").innerHTML = event.data;
+				  };
+				};
+
+				sendChannel = pc.createDataChannel("sendDataChannel", {reliable: false});
+
+				document.querySelector("button#send").onclick = function (){
+				  var data = document.querySelector("textarea#send").value;
+				  sendChannel.send(data);
+				};
+
+2. WebRTC servers and protocols
+	
+
+https://www.youtube.com/watch?v=5ci91dfKCyc
+https://www.youtube.com/watch?v=d7NsiFXcc5A
+https://www.youtube.com/watch?v=HCE3S1E5UwY
+https://www.youtube.com/watch?v=3TbVi9aB09k
+https://www.youtube.com/watch?v=nDPlGcoArdM
+https://www.youtube.com/watch?v=Muio-LPn7uo

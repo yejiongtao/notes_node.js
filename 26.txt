@@ -1,0 +1,19 @@
+1. bcryptjs module
+	Optimized bcrypt in plain JavaScript with zero dependencies
+		bcrypt is suitable for hashing passwords
+	why bcrypt?
+		general purpose hash functions like MD5, SHA512, are designed to calculate a digest of huge amounts of data in as short a time as possible
+			so it won't take long to crack the passwords
+		bcrypt lets you define a work factor
+			you can change the factor in the future to keep up with Moore's law
+			however, if the factor is too large, it can get really slow
+	to use
+		var bcrypt = require('bcryptjs');
+		var SALT_FACTOR = 10;
+		bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
+			bcrypt.hash('this is password', salt, function(){}, function(err, hashed) {
+				// ..
+			});
+		});
+
+		// use bcrypt.compare instead of '===', to prevent timing attack

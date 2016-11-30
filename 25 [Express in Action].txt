@@ -82,10 +82,26 @@
 		Mongo adds a unique _id property to every document
 
 7. Mongoose
-	creating schemas
+	creating a model
 		// models/user.js
 		var userSchema = mongoose.Schema({
 			username: {type: String, required: true, unique: true},
 			createdAt: {type: Date, default: Date.now},
 			bio: String
 		});
+		// then you define some methods to use
+		userSchema.methods.name = function() {
+			return this.username;
+		}
+
+		// a pre-save action
+		userSchema.pre("save", function(done) {
+			// do some work, such as verifying the data you want to save is valid
+			done();
+		});
+
+		var User = mogoose.model('User', userSchema);
+		module.exports = User;
+
+	using the model
+		
