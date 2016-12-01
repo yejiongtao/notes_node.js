@@ -26,4 +26,81 @@
 		Istanbul, a Node code coverage tool
 
 3. Mocha testing framework
+	Mocha waits for an assertion library to throw an error. Otherwise the test passes
+		so an assertion library like chai is needed
 
+	below is the approach for unit tests
+		useful for testing business logic like model behavior or utility functions
+	
+	code
+		// package.json
+		{
+			"devDependencies": {	// --save-dev
+				"chai": "^1.9.2"	// an assertion library
+				"mocha": "^2.0.1"
+			},
+			"scripts": {
+				"test": "mocha"
+			}
+		}
+
+		// 'npm test' will use mocha to run all the js file user test/
+		// test/testF.js
+		var f = require('../f');	// the function to be tested
+		var expect = require('chai').expect;
+
+		describe('testing f', function () {	// you describe a suite of tests
+
+			beforeEach(function(){
+				// do something before each tests
+				// e.g. create an object for testing purpose
+			});
+
+			// you can have multiple tests in a suite
+			it('returns 1', function () {
+				expect(f()).to.equal(1);
+				// expect(f()).not.to.equal(2);	// reverse test
+			});
+
+			it('throws error if passed a boolean', function(){
+				// to test for errors, you should wrap it in a function
+				expect(function(){ f(true); }).to.throw(Error);
+				expect(function(){ f(false); }).to.throw(Error);
+			});
+		});
+		// describe it is mocha language
+
+4. SuperTest
+	for integration tests
+		to test the routes or middleware of your Express applications
+	SuperTest sends requests to the server and makes assertions on the responses
+
+	code
+		var app = require('../app');
+		var supertest = require('supertest');
+
+		describe('plain text response', function() {
+			var request;
+			beforeEach(function() {
+				request = supertest(app)
+				.get('/')
+				.set('Accept', 'text/plain');
+			});
+
+			it('returns a plain text', function(done) {
+				request				
+					.expect('Content-Type', /text\/plain/)
+					.expect(200)
+					.end(done);
+				// done is a callback function passed to you by Mocha, used to signal asynchronous tests are all done
+			});
+
+			it('returns hello world', function(done) {
+				request				
+					.expect(function(res) {
+						if(res.text !== 'hello world')
+							throw new Error('not responding hello world');
+					})
+					.end(done);
+			});
+		});

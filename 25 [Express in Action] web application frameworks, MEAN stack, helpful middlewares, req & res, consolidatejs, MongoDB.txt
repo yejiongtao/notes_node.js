@@ -55,9 +55,15 @@
 	res.sendFile
 	res.status
 	res.send
+	res.type('text')		// text/plain
 
 	req.ip
-	req.get		// gets HTTP headers
+	req.get					// gets HTTP headers
+	req.accepts('html')		// true if the request accepts html
+	req.is('html')			// if the content-type of the request is html
+	req.baseUrl				// the url path on which a router instance was mounted
+
+
 
 5. consolidate.js
 	a library that wraps a ton of view engines to be compatible with Express

@@ -30,6 +30,8 @@
 
 2. parsing XML
 	use 'cheerio' module
+		cheerio is jQuery for Node
+		can be used to parse html file and select elements like jQuery does
 	example
 		const fs = require('fs');
 		const cheerio = require('cheerio');
