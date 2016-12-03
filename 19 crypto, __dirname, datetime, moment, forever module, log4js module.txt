@@ -90,6 +90,7 @@
 		forever stopall
 		forever list
 		// there will be a log file for each launched script, containing those would have been printed out to the console
+	you can put it in npm scripts
 
 5. log4js module
 	vs debug module

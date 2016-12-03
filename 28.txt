@@ -1,0 +1,123 @@
+1. LESS, a preprocessor of CSS
+	major features
+		variables
+			allow you to define things once and use them everywhere (CSS doesn't have variables)
+		functions
+			allow you to manipulate variables
+			all functions are built-in, you cannot define your own
+		nesting selectors
+			allow you to structure your stylesheet more like your HTML and reduce repetition
+		mixins
+			allow you to define reusable components and use them in various selectors
+		includes
+			allow you to split your stylesheets into multiple files
+			in CSS, if you do this, it results in multiple HTTP requests in order to get multiple files
+			in LESS, at last they are compiled into a single CSS file
+
+	example
+		// LESS is a strict superset of CSS
+		// which means any valid CSS is valid LESS
+
+		@import "other-less-file";	// include
+		@link-color: #ff9900;		// variable
+
+		a {
+			color: @link-color;
+			&:hover {	// nesting the parent selector
+				color: lighten(@link-color, 25%);	// function
+			}
+		}
+
+		.border-radius(@radius) {	// a reusable mixin
+			-webkit-border-radius: @radius;
+			-moz-border-radius: @radius;
+			-ms-border-radius: @radius;
+			border-radius: @radius;
+			// this is the way to have border-radius work in all browsers
+		}
+
+		.my-element {
+			.border-radius(5px);	// use mixin
+			a {	// nesting, shorter, more readable and well-structured
+				// the CSS way is, .my-element a {}
+				background-color: blue;
+			}
+		}
+
+	alternative
+		Sass, pretty similar
+
+2. Browserify
+	for packaging JS that allows you to use 'require' just like in Node
+		it'a almost completely consistent with Node modules
+			letting you share code between server and client  with no extra work
+		you can require most native Node modules in the browser
+		many Node-isms like __dirname are resolved
+	
+	but you got to compile the client-side JS before serving them
+	
+3. Grunt, to compile, minify, and more
+	a task runner
+	itself is a minimal framework
+		but support tasks including compiling CoffeeScript or LESS or SASS, concatenating JS and CSS, running tests, and more
+
+	to use
+		install
+			npm install --save-dev grunt grunt-cli
+			create a npm script so that it can be run directly
+		
+		Gruntfile, where Grunt examines to figure out what to do
+			// Gruntfile.js at the root of the project
+			module.exports = function(grunt) {
+				grunt.registerTask("default", "Say Hello World.", function() {
+					grunt.log.write("Hello world!");
+				});
+			};
+	
+	compile LESS with Grunt
+		install grunt-contrib-less
+	use Browserify with Grunt
+	minify the JS with Grunt using grunt-contrib-uglify
+		module.exports = function(grunt) {
+			grunt.initConfig({	// configures settings for each Grunt task
+				less: {
+					main: {
+						options: { path: ["my_css"] },
+						files: { "tmp/build/main.css": "my_css/main.less"}
+					}
+					// then add tmp/build as one of your static path, and they can be served
+				},
+				browserify: {
+					client: {
+						src: ["my_js/main.js"],
+						dest: 'tmp/build/main.js'
+					}
+				},
+				uglify: {
+					myApp: {
+						files: { 'tmp/build/main.min.js': ['tmp/build/main.js']}
+					}
+				}
+			});
+
+			// load the plugins
+			grunt.loadNpmTasks('grunt-contrib-less');
+			grunt.loadNpmTasks('grunt-browserify');
+			grunt.loadNpmTasks('grunt-contrib-uglify');
+
+			// tell it to run the task when grunt is run
+			grunt.registerTask('default', ['browserify', 'less']);
+			grunt.registerTask('build', ["browserify", "less", "uglify"]);
+				// runs when you type 'grunt build'
+		};
+
+	other useful tasks
+		grunt-contrib-watch
+			use Grunt watch to rerun tasks when certain files change
+		grunt-contrib-concat
+			concatenates files
+		grunt-contrib-imagemin
+			minifies images
+		grunt-contrib-coffee
+			compiles CoffeeScript
+		

@@ -1,0 +1,120 @@
+1. perilous parsing of query strings
+	when using req.query, it can be dangerous, cuz the client has full control of the url
+	possible situations
+		the query parameter may not exist
+			var	q = req.query.q || "defualt";
+		there might be multiple parameters with the same name
+			in this case, req.query.q is an array
+			you should check its type before dealing with it
+
+2. HTTPS
+	express-enforces-ssl
+		redirects all non-https requests to https versions
+		code
+			var enforceSSL = require('express-enforces-ssl');
+			// ...
+			app.enable('trust proxy');
+			// if not set, when behind proxies, it will incorrectly register the proxy¡¯s IP address as the client IP address 
+			app.use(enforceSSL());
+	
+	HSTS (HTTP Strict Transport Security)
+		to avoid users going back to HTTP once they are on HTTPS
+			can significantly decrease the amounts of redirects
+			by setting header Strict-Transport-Security
+			but only effective if the client is already on HTTPS
+				so should use it with express-enforces-ssl
+		code
+			app.use(helmet.hsts({
+				maxAge: ms('1 year'),
+				includeSubdomains: true
+			}));
+
+3. ms module
+	translates human-readable strings like '2 days' into miliseconds
+	var time = ms('1 month');
+
+4. cross-site scripting (XSS) attack 
+	when malicious user input contains <script>
+		if you put the input directly in your html, the script will be executed
+
+	to avoid it
+		always escape user input
+			most templating engines handles this kind of escaping for you
+			in Pug, it's done by default, for example
+
+		if the input should be a URL
+			you should make sure it's a URL
+			and also call the built-in 'encodeURI' function to make sure it's safe
+		
+		migitate XSS with HTTP headers (not so helpful)
+			X-XSS-Protection, protects against reflected XSS
+				app.use(helmet.xssFilter());
+			Content-Security-Policy
+				use Helmet's csp middleware
+
+5. cross-site request forgery (CSRF) prevention
+	the attack
+		silently put an auto-submit form in a web page, to post a request (e.g. post to wire some money)
+		when you open the web page, the request is sent, along with your cookie, and the wire is done
+	
+	protection
+		the original website (e.g. the bank), should include a hidden field in the form, containing a random token
+		when a request comes, check the token to make sure the request came from our own website, not from a forged one
+	
+	in Express
+		var csrf = require('csurf');
+		// you must use body-parser and express-session, or the like
+		app.use(csrf());
+
+		app.get('/', function(req, res) {
+			res.render('myview', {
+				csrfToken: req.csrfToken()
+			});
+		});
+
+		// in the view
+		<form method="post" action="/submit">
+			<input name="_csrf" value="<%= csrfToken %>" type="hidden">
+			<! -- ¡­ -->
+		</form>
+
+		// then the csurf takes care of the rest
+		// optionally, you can handle the failed CSRF
+		app.use(function(err, req, res, next) {
+			if (err.code !== "EBADCSRFTOKEN") {
+				next(err);
+				return;
+			}
+			res.status(403);
+			res.send("CSRF error.");
+		});
+
+6. update dependencies
+	it's a good idea to update your dependencies frequently
+	npm outdated --depth 0
+		check the outdated packages
+		then modify package.json and npm install
+
+7. Node Security Project
+	an ambitious under taking to audit every module in the npm registry for security problem
+	nsp check
+
+8. some tricks to make it safer
+	app.disable('x-power-by');
+		prevent Express to add this header in the responses
+		so that the client won't know this server is Express
+
+	app.use(helmet.noSniff());
+		some browsers will infer the file type and execute them, even if your server serves it with a text/plain content type
+		in this way, user may upload a malicious js file
+
+9. clickjacking
+	takes advantage of browser frames--the ability to embed on page in another
+		so when you are clicking on page, you may be actually clicking some page in an invisible frame
+	
+	to prevent your web page being put in a frame, set the X-Frame-Options
+		app.use(helmet.frameguard('sameorigin'));	// only your own website can do this
+		app.use(helmet.frameguard('deny'));			// no one can
+	
+	
+

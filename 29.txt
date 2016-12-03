@@ -1,0 +1,75 @@
+1. connect-assets
+	an alternative to Grunt
+		can concatenate, compile to, and minify JS and CSS
+			supports CoffeeScript, Stylus, LESS, SASS, EJS, etc
+		doesn't support Browserify
+		but very easy to use
+	
+	install
+		connect-assets, and also the following compilers
+			coffee-script, stylus, less, node-sass, ejs, uglify-js for js minification, csswring for CSS minification
+	
+	default directory for assets
+		assets/css and assets/js
+
+	setup
+		var assets = require('connect-assets');
+		app.use(assets({
+			helperContext: app.locals,
+			paths: ['assets/css', 'assets/js']
+		}))
+		// by default, it enables minification and caching in production but disables them in development
+		// by default, it attaches its helpers to the global object. the helperContext above attaches them to app.locals
+
+	link to assets from views
+		two major helper functions
+			js		returns a <script> tag
+			css		returns a <link> tag
+
+		// in jade
+			!= css('my-css-file')	// make sure you don't escape
+			!= js('my-js-file')
+
+2. Heroku, a simple way to deploy your Node.js app on Internet
+	install Heroku Toolbelt
+	prepare your app
+		make sure to start the app on process.env.PORT
+			cuz Heroku use this environment parameter to specify port number
+
+		make sure your package.json lists a Node version
+			"engines": {
+				"node": "^4.2.x"
+			}
+
+		create a file named Procfile in your app
+			// in the file
+			web: npm start
+			// npm run produnction, if you have a npm script as below
+			// "produnction": "forever bin/www"
+		
+		add a .gitignore
+			don't push node_modules onto Heroku, it will npm install
+
+	deploy
+		commit your project to git
+		# heroku create
+			will add a remote git server named heroku
+		# heroku config:set NODE_ENV=production
+		# git push heroku master
+		# heroku ps:scale web=1
+			tell it to run your app with one process
+		# heroku open
+			open it in the browser
+
+	running Grunt on Heroku
+		no need to worry about connect-assets
+		but as for Grunt
+			add a npm script:
+				"postinstall": "grunt build"
+			// then after npm install, grunt build will be called
+
+3. 
+
+
+
+

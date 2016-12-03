@@ -6,6 +6,8 @@
 	you can add commands to it, e.g. setting environment variables
 		you can also add more scripts
 			"test": "node test"
+			"db-migrate": "db-migrate"
+			// if you install a module in the local environment, you cannot call it directly, but using npm scripts, you can
 
 2. nodemon module
 	'node monitor', runs a Node.js program
