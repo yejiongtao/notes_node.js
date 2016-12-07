@@ -68,9 +68,39 @@
 				"postinstall": "grunt build"
 			// then after npm install, grunt build will be called
 
-3. 
+3. optimistic versioning
+	5.1.0
+		5 is major version
+			a major version upgrade can have a breaking change (may be not compatible)
+		1 is minor version
+			generally means a new feature that doesn't break existing code
+		0 is patch version
+			for bug fixes and performance enhancements
+	
+	^5.1.0
+		indicates optimistic versioning is allowed
+		will get all patch and minor updates
+	~5.1.8
+		indicates a slightly less optimistic versioning
+		will get patch updates
+	(with optimistic versioning, npm install will install the latest version allowed)
+	
+	to lock down dependency versions
+		--save-exact
+			but this will not lock down the version's subdependencies
+		
+		npm shrinkwrap
+			creates a npm-shrinkwrap.json containing the whole dependency tree with exact versions
+			npm install will look for npm-shrinkwrap.json before package.json
 
-
-
+		to manually update a package
+			npm install express@4.12.1
+			then npm shrinkwrap again
+	
+4. localize dependencies
+	why
+		what if they don't have the global package you require
+		what if they have a wrong version
+	
 
 
