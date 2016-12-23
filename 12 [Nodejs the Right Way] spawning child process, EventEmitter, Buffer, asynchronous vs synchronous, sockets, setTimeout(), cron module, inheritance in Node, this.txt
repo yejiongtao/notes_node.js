@@ -17,6 +17,18 @@ reading Node.js the Right Way, Practical, Server-Side JavaScript That Scales
 	var ls = spawn('ls', ['-l', 'mydir']);	// returns the child process
 	ls.stdout.pipe(process.stdout);		// its stdin, stdout, stderr properties are Streams
 
+2.5 chid_process.spawn vs child_process.exec
+	spawn
+		只能运行指定的程序，参数需要在列表中给出
+			spawn('ls', ['-l', 'mydir'])
+		结果数据不断返回给主线程（通过stdout等stream）
+			
+	exec
+		可以直接运行复杂的命令
+			exec('ls -l mydir')
+		输出结果存在buffer中，运行结束再一次返回
+			注意 max buffer 的大小
+
 3. capturing data from an EventEmitter
 	EventEmitter provides a channel for events to be dispatched and listeners notified
 		many objects in Node inherit from EventEmitter, such as Streams
