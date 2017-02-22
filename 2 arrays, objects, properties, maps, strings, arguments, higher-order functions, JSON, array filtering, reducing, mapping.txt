@@ -9,6 +9,8 @@
 		l.unshift(1);		// adds the item to the beginning of the list
 		var l1 = l.slice(2, 4);
 		var l2 = l1.concat(l1);
+		l.splice(2, 3);		// delete and return the subarray from index 2 to index 4
+		
 	properties
 		almost every js values have properties (except null and undefined)
 		two ways to access the properties

@@ -1,17 +1,17 @@
-1. Express Ä¬ÈÏÏîÄ¿Ä¿Â¼½á¹¹
-	bin		Æô¶¯ÏîÄ¿µÄ½Å±¾ÎÄ¼ş£¬Ä¬ÈÏwww
-	node_modules	ÏîÄ¿ÒÀÀµ¿â
-		bodyParser	ÓÃÀ´½âÎö¿Í»§¶ËÇëÇóµÄbodyÖĞµÄÄÚÈİ
-		cookieParser	ÖĞ¼ä¼şÓÃÓÚ»ñÈ¡ä¯ÀÀÆ÷·¢ËÍµÄcookieµÄÄÚÈİ
-		debug		¿ÉÓÃÀ´´òÓ¡ÖÁconsole
-		jade		Ò»¸ö¸ßĞÔÄÜµÄÄ£°åÒıÇæ
-		morgan		´òÓ¡µÄnodejs·şÎñÆ÷½ÓÊÕµ½µÄÇëÇóµÄĞÅÏ¢
-		serve-favicon	favicon·şÎñÖĞ¼ä¼şºÍ»º´æ
-	public		¾²Ì¬×ÊÔ´ÎÄ¼ş¼Ğ
-	routes		Â·ÓÉÎÄ¼ş£¬Ïàµ±ÓÚMVCÖĞµÄController
-	views		Ò³ÃæÎÄ¼ş£¬MVCÖĞµÄView£¬EjsÄ£°å»òjadeÄ£°å
-	package.json	ÏîÄ¿ÒÀÀµÒÔ¼°¿ª·¢ÕßĞÅÏ¢
-	app.js		Ó¦ÓÃºËĞÄÅäÖÃÎÄ¼ş£¬ÏîÄ¿Èë¿Ú
+1. Express é»˜è®¤é¡¹ç›®ç›®å½•ç»“æ„
+	bin		å¯åŠ¨é¡¹ç›®çš„è„šæœ¬æ–‡ä»¶ï¼Œé»˜è®¤www
+	node_modules	é¡¹ç›®ä¾èµ–åº“
+		bodyParser	ç”¨æ¥è§£æå®¢æˆ·ç«¯è¯·æ±‚çš„bodyä¸­çš„å†…å®¹
+		cookieParser	ä¸­é—´ä»¶ç”¨äºè·å–æµè§ˆå™¨å‘é€çš„cookieçš„å†…å®¹
+		debug		å¯ç”¨æ¥æ‰“å°è‡³console
+		jade		ä¸€ä¸ªé«˜æ€§èƒ½çš„æ¨¡æ¿å¼•æ“
+		morgan		æ‰“å°çš„nodejsæœåŠ¡å™¨æ¥æ”¶åˆ°çš„è¯·æ±‚çš„ä¿¡æ¯
+		serve-favicon	faviconæœåŠ¡ä¸­é—´ä»¶å’Œç¼“å­˜
+	public		é™æ€èµ„æºæ–‡ä»¶å¤¹
+	routes		è·¯ç”±æ–‡ä»¶ï¼Œç›¸å½“äºMVCä¸­çš„Controller
+	views		é¡µé¢æ–‡ä»¶ï¼ŒMVCä¸­çš„Viewï¼ŒEjsæ¨¡æ¿æˆ–jadeæ¨¡æ¿
+	package.json	é¡¹ç›®ä¾èµ–ä»¥åŠå¼€å‘è€…ä¿¡æ¯
+	app.js		åº”ç”¨æ ¸å¿ƒé…ç½®æ–‡ä»¶ï¼Œé¡¹ç›®å…¥å£
 
 2. routing
 	app.get('/', function(req, res) {	// app is an instance of express

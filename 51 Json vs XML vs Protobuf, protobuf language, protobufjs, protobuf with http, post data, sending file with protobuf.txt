@@ -24,34 +24,34 @@
 2. Protobuf language (proto2)
 	http://colobu.com/2015/01/07/Protobuf-language-guide/
 	basic
-		package foo;				// package ÓÃÀ´·ÀÖ¹namespace³åÍ»
-		import "other.proto"			// import Ïàµ±ÓÚ¸´ÖÆ¹ıÀ´
+		package foo;				// package ç”¨æ¥é˜²æ­¢namespaceå†²çª
+		import "other.proto"			// import ç›¸å½“äºå¤åˆ¶è¿‡æ¥
 		message MyMessage {
-			required string query = 1;	// Ã¿¸ö×Ö¶ÎÓĞÒ»¸öÎ¨Ò»µÄÊı×Ö±êÊ¶·û£¬Ò»µ©Ê¹ÓÃ¾Í²»ÄÜ¸Ä±ä¡£´Ó1¿ªÊ¼
-							// required£¬²»½¨ÒéÊ¹ÓÃ£¬ÒòÎªÒÔºóÏë²»Òª¿ÉÄÜ»áµ¼ÖÂ¼æÈİÎÊÌâ
-			optional int32 page_number = 2 [default = 10];		// optional£¬0»ò1¸ö
-							// repeated£¬0¹ı¶à¸ö
-			repeated YourMessage urMessage = 3;	// messageÖĞ¿ÉÒÔ°üº¬ÆäËûmessage
+			required string query = 1;	// æ¯ä¸ªå­—æ®µæœ‰ä¸€ä¸ªå”¯ä¸€çš„æ•°å­—æ ‡è¯†ç¬¦ï¼Œä¸€æ—¦ä½¿ç”¨å°±ä¸èƒ½æ”¹å˜ã€‚ä»1å¼€å§‹
+							// requiredï¼Œä¸å»ºè®®ä½¿ç”¨ï¼Œå› ä¸ºä»¥åæƒ³ä¸è¦å¯èƒ½ä¼šå¯¼è‡´å…¼å®¹é—®é¢˜
+			optional int32 page_number = 2 [default = 10];		// optionalï¼Œ0æˆ–1ä¸ª
+							// repeatedï¼Œ0è¿‡å¤šä¸ª
+			repeated YourMessage urMessage = 3;	// messageä¸­å¯ä»¥åŒ…å«å…¶ä»–message
 		}
-		message YourMessage {			// Ò»¸ö.protoÎÄ¼ş¿ÉÒÔÓĞ¶à¸ömessage
+		message YourMessage {			// ä¸€ä¸ª.protoæ–‡ä»¶å¯ä»¥æœ‰å¤šä¸ªmessage
 			enum Corpus {
 				UNIVERSAL = 0;
 				WEB = 1;
 			}
 			optional Corpus corpus = 1 [default = UNIVERSAL];
-			message HisMessage {		// Ç¶Ì×
+			message HisMessage {		// åµŒå¥—
 			}
 		}
 
-	update £¨±ÈÈçserver¸ÄÁË£¬clientËäÈ»Ã»¸ÄÒ²ÄÜ¼æÈİ£©
-		²»ÒªĞŞ¸ÄÈÎºÎÒ»ÓĞ×Ö¶ÎµÄÊıÖµ±êÊ¶
-		ËùÌí¼ÓµÄ±ØĞëÊÇoptional »òrepeated µÄ£¬ÇÒ×îºÃÓĞºÏÀíµÄÄ¬ÈÏÖµ
-		·Çrequired ×Ö¶Î¿ÉÒÔÒÆ³ı
-			µ«×îºÃÊÇ¸ÄÃû×Ö£¬±ÈÈç¼ÒOBSOLETE_ Ç°×º£¬ÒÔ±ÜÃâËüµÄÊıÖµ±êÊ¶²»»á±»ÆäËû×Ö¶ÎÊ¹ÓÃ
-		int32, uint32, int64, uint64,ºÍboolÊÇÈ«²¿¼æÈİµÄ
-		sint32ºÍsint64ÊÇ»¥Ïà¼æÈİµÄ£¬µ«ÊÇËüÃÇÓëÆäËûÕûÊıÀàĞÍ²»¼æÈİ
-		stringºÍbytesÊÇ¼æÈİµÄ¡ª¡ªÖ»ÒªbytesÊÇÓĞĞ§µÄUTF-8±àÂë
-		fixed32Óësfixed32ÊÇ¼æÈİµÄ£¬fixed64Óësfixed64ÊÇ¼æÈİµÄ
+	update ï¼ˆæ¯”å¦‚serveræ”¹äº†ï¼Œclientè™½ç„¶æ²¡æ”¹ä¹Ÿèƒ½å…¼å®¹ï¼‰
+		ä¸è¦ä¿®æ”¹ä»»ä½•ä¸€æœ‰å­—æ®µçš„æ•°å€¼æ ‡è¯†
+		æ‰€æ·»åŠ çš„å¿…é¡»æ˜¯optional æˆ–repeated çš„ï¼Œä¸”æœ€å¥½æœ‰åˆç†çš„é»˜è®¤å€¼
+		érequired å­—æ®µå¯ä»¥ç§»é™¤
+			ä½†æœ€å¥½æ˜¯æ”¹åå­—ï¼Œæ¯”å¦‚å®¶OBSOLETE_ å‰ç¼€ï¼Œä»¥é¿å…å®ƒçš„æ•°å€¼æ ‡è¯†ä¸ä¼šè¢«å…¶ä»–å­—æ®µä½¿ç”¨
+		int32, uint32, int64, uint64,å’Œboolæ˜¯å…¨éƒ¨å…¼å®¹çš„
+		sint32å’Œsint64æ˜¯äº’ç›¸å…¼å®¹çš„ï¼Œä½†æ˜¯å®ƒä»¬ä¸å…¶ä»–æ•´æ•°ç±»å‹ä¸å…¼å®¹
+		stringå’Œbytesæ˜¯å…¼å®¹çš„â€•â€•åªè¦bytesæ˜¯æœ‰æ•ˆçš„UTF-8ç¼–ç 
+		fixed32ä¸sfixed32æ˜¯å…¼å®¹çš„ï¼Œfixed64ä¸sfixed64æ˜¯å…¼å®¹çš„
 
 3. protobufjs
 	http://www.tuicool.com/articles/mqArUbI

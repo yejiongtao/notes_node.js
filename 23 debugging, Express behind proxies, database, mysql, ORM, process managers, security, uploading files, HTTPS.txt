@@ -48,9 +48,9 @@
 			    callback(err,null,null);  
 			}else{  
 			    conn.query(sql, function(qerr, vals, fields){  
-				//ÊÍ·ÅÁ¬½Ó  
+				//é‡Šæ”¾è¿æ¥  
 				conn.release();  
-				//ÊÂ¼şÇı¶¯»Øµ÷  
+				//äº‹ä»¶é©±åŠ¨å›è°ƒ  
 				callback(qerr, vals, fields);  
 			    });
 			}  
@@ -112,7 +112,7 @@
 	to get a SSL/TLS certificate from a CA
 		Let's Encrypt	// a non-profit organization that provides free certificate
 		ACME
-			Let¡¯s Encrypt uses the ACME protocol to verify that you control a given domain name and to issue you a certificate
+			Letâ€™s Encrypt uses the ACME protocol to verify that you control a given domain name and to issue you a certificate
 			list of ACME clients
 				https://letsencrypt.org/docs/client-options/
 				Certbot is only for Unix-like OS
@@ -147,7 +147,7 @@
 				// CSR
 			openssl x509 -req -in certsign.csr -signkey privatekey.pem -out certificate.crt
 				// certificate
-			// Èç¹û³öÏÖÎŞ·¨·ÃÎÊÅäÖÃÎÄ¼ş£¬ÔòÓÃ -config Â·¾¶£¬Ìá¹©openssl°²×°Ä¿Â¼ÏÂµÄÅäÖÃÎÄ¼şÂ·¾¶
+			// å¦‚æœå‡ºç°æ— æ³•è®¿é—®é…ç½®æ–‡ä»¶ï¼Œåˆ™ç”¨ -config è·¯å¾„ï¼Œæä¾›opensslå®‰è£…ç›®å½•ä¸‹çš„é…ç½®æ–‡ä»¶è·¯å¾„
 
 	BUT! a more common approach is to configure the SSL certificate on Nginx
 		and there are scripts on the internet to do this automatically

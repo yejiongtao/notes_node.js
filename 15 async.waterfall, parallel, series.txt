@@ -1,7 +1,7 @@
 0. node.js style function
 	those with a callback function in the form of function(err, result)
 
-1. async.waterfall()	´®ĞĞÓĞ¹ØÁª
+1. async.waterfall()	ä¸²è¡Œæœ‰å…³è”
 	async.waterfall() executes a sequence of asynchronous functions
 	takes two arguments
 		an array of functions to execute sequentially
@@ -26,7 +26,7 @@
 		    console.log(result);
 		})
 
-2. async.parellel()	²¢ĞĞÎŞ¹ØÁª
+2. async.parellel()	å¹¶è¡Œæ— å…³è”
 	// suitable for those parellel tasks with a final task should be executed after they are done
 	var async = require('async');
 	async.parallel({
@@ -39,11 +39,11 @@
 		}
 	    },
 	    two: function (done) {
-		//´¦ÀíÂß¼­
+		//å¤„ç†é€»è¾‘
 		done(null, 'tow');
 	    },
 	    three: function (done) {
-		//´¦ÀíÂß¼­
+		//å¤„ç†é€»è¾‘
 		done(null, 'three');
 	    }
 	}, function (error, result) {
@@ -52,18 +52,18 @@
 	    console.log('three:', result.three);
 	})
 
-3. async.series()	´®ĞĞÎŞ¹ØÁª
+3. async.series()	ä¸²è¡Œæ— å…³è”
 	async.series({
 	    one: function (done) {
-		//´¦ÀíÂß¼­
+		//å¤„ç†é€»è¾‘
 		done(null, 'one');
 	    },
 	    two: function (done) {
-		//´¦ÀíÂß¼­
+		//å¤„ç†é€»è¾‘
 		done(null, 'tow');
 	    },
 	    three: function (done) {
-		//´¦ÀíÂß¼­
+		//å¤„ç†é€»è¾‘
 		done(null, 'three');
 	    }
 	}, function (error, result) {

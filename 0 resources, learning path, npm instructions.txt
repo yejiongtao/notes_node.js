@@ -1,23 +1,23 @@
-1. Ñ§Ï°×ÊÁÏ
+1. å­¦ä¹ èµ„æ–™
 	https://www.zhihu.com/question/21567720
-	ÈîÒ»·å http://www.ruanyifeng.com/blog/
-Ñ§Ï°Â·¾¶
+	é˜®ä¸€å³° http://www.ruanyifeng.com/blog/
+å­¦ä¹ è·¯å¾„
 	JavaScript
 		http://eloquentjavascript.net/
 	NodeJS
 		http://eloquentjavascript.net/
-		nodeÈëÃÅ
+		nodeå…¥é—¨
 		nodejs in action 
 		nodejs in practice (deep)
-		nodejs the right way (¾ö¶¨ÏÈ¿´Õâ¸ö)
+		nodejs the right way (å†³å®šå…ˆçœ‹è¿™ä¸ª)
 		nodejs design patterns
 		api
 	Express
-		express in action (ÏÈ¿´)
+		express in action (å…ˆçœ‹)
 		web development with node and express
 	React
 
-2. npm ³£ÓÃÃüÁî
+2. npm å¸¸ç”¨å‘½ä»¤
 	http://www.cnblogs.com/PeunZhang/p/5553574.html
 
 	npm init
@@ -31,8 +31,8 @@
 		install it globally
 
 3. npm MSBUILS error
-	´íÎó£ºÕÒ²»µ½MSBUILD version 2.0
-		½â¾ö£ºÉèÖÃÊ¹ÓÃÆäËû°æ±¾
+	é”™è¯¯ï¼šæ‰¾ä¸åˆ°MSBUILD version 2.0
+		è§£å†³ï¼šè®¾ç½®ä½¿ç”¨å…¶ä»–ç‰ˆæœ¬
 			npm config set msvs_version 2012 --global
 
 3. todo

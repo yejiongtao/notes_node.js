@@ -14,7 +14,7 @@
 			var enforceSSL = require('express-enforces-ssl');
 			// ...
 			app.enable('trust proxy');
-			// if not set, when behind proxies, it will incorrectly register the proxy¡¯s IP address as the client IP address 
+			// if not set, when behind proxies, it will incorrectly register the proxyâ€™s IP address as the client IP address 
 			app.use(enforceSSL());
 	
 	HSTS (HTTP Strict Transport Security)
@@ -75,7 +75,7 @@
 		// in the view
 		<form method="post" action="/submit">
 			<input name="_csrf" value="<%= csrfToken %>" type="hidden">
-			<! -- ¡­ -->
+			<! -- â€¦ -->
 		</form>
 
 		// then the csurf takes care of the rest

@@ -1,0 +1,19 @@
+1. ws module
+	server
+		var WebSocketServer = require('ws').Server;
+		var wss = new WebSocketServer({port: 8080});
+		wss.on('connection', function(ws) {
+			console.log(ws.upgradeReq.url);		// this is the way of getting its url
+			ws.send('hello');
+		});
+	client
+		var WebSocket = require('ws');
+		var ws = new WebSocket('ws://localhost:8080/hiya');
+		ws.on('message', function(data) {
+			...
+		});
+
+2. yargs module
+	// node 1.js --name=hi --hello=hehe
+	var argv = require('yargs').argv;
+	// { name: 'hi', hello: 'hehe' }

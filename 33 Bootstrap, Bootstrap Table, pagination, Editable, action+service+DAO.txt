@@ -104,19 +104,19 @@
 
 4. Action + Service + DAO
 	definition
-		Action	¹ÜÀíServiceµ÷¶ÈºÍ¹ÜÀíÌø×ªµÄ
-		Service	Âú×ãAction×ª´ïµÄÐèÇó£¬ÊµÊ©¾ßÌåµÄ¹¦ÄÜ
-		DAO	Âú×ãServiceµÄÐèÇó£¬Íê³ÉÊý¾Ý¿âÏà¹ØµÄÔöÉ¾¸Ä²é
+		Action	ç®¡ç†Serviceè°ƒåº¦å’Œç®¡ç†è·³è½¬çš„
+		Service	æ»¡è¶³Actionè½¬è¾¾çš„éœ€æ±‚ï¼Œå®žæ–½å…·ä½“çš„åŠŸèƒ½
+		DAO	æ»¡è¶³Serviceçš„éœ€æ±‚ï¼Œå®Œæˆæ•°æ®åº“ç›¸å…³çš„å¢žåˆ æ”¹æŸ¥
 		
 	Struts + Hibernate + Spring
-		Struts		Æð¿ØÖÆ×÷ÓÃ£¬¼´Action
-		Spring		¸ºÔðÒµÎñ²ã¹ÜÀí£¬¼´Service
-		Hibernate	Êý¾Ý³Ö¾Ã»¯²ã£¬Íê³ÉÊý¾Ý¿âµÄCRUD²Ù×÷£¬¶¨ÒåDAO½Ó¿Ú
-			¸ù¾ÝÊý¾Ý¿âµÄ±í£¬·´ÏòÉú³ÉÊµÌåÀà£¬ÀïÃæ»¹ÓÐ¹ØÏµ£¬Ê¹µÃÊý¾Ý¿â²Ù×÷ºÜ·½±ã
+		Struts		èµ·æŽ§åˆ¶ä½œç”¨ï¼Œå³Action
+		Spring		è´Ÿè´£ä¸šåŠ¡å±‚ç®¡ç†ï¼Œå³Service
+		Hibernate	æ•°æ®æŒä¹…åŒ–å±‚ï¼Œå®Œæˆæ•°æ®åº“çš„CRUDæ“ä½œï¼Œå®šä¹‰DAOæŽ¥å£
+			æ ¹æ®æ•°æ®åº“çš„è¡¨ï¼Œåå‘ç”Ÿæˆå®žä½“ç±»ï¼Œé‡Œé¢è¿˜æœ‰å…³ç³»ï¼Œä½¿å¾—æ•°æ®åº“æ“ä½œå¾ˆæ–¹ä¾¿
 		
-		Õâ¸öÏµÍ³ÖÐ¶ÔÏóµÄµ÷ÓÃÁ÷³ÌÒ»°ãÊÇ
+		è¿™ä¸ªç³»ç»Ÿä¸­å¯¹è±¡çš„è°ƒç”¨æµç¨‹ä¸€èˆ¬æ˜¯
 			JSP -- Action -- Service -- DAO -- Hibernate
 
-	Ê¹ÓÃExpress¿ìËÙ¿ª·¢µÄÊ±ºò£¬·½±ãÆð¼û¿ÉÒÔ°ÑActionºÍServiceºÏ²¢
-		µ« DAO Òªµ¥¶À³öÀ´£¬ÒòÎªÊý¾Ý¿âÊÇºÜ¿ÉÄÜ»á¸Ä±äµÄ
+	ä½¿ç”¨Expresså¿«é€Ÿå¼€å‘çš„æ—¶å€™ï¼Œæ–¹ä¾¿èµ·è§å¯ä»¥æŠŠActionå’ŒServiceåˆå¹¶
+		ä½† DAO è¦å•ç‹¬å‡ºæ¥ï¼Œå› ä¸ºæ•°æ®åº“æ˜¯å¾ˆå¯èƒ½ä¼šæ”¹å˜çš„
 

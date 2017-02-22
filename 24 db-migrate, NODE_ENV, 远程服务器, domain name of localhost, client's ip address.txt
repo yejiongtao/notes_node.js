@@ -69,7 +69,7 @@
 		make sure to set it to production when releasing the program
 		add the environment variable in the run configuration window
 	
-3. ¹ØÓÚÔ¶³Ì·şÎñÆ÷
+3. å…³äºè¿œç¨‹æœåŠ¡å™¨
 	xShell
 		supports SSH, telnet
 		can easily connect to and manage your server using it

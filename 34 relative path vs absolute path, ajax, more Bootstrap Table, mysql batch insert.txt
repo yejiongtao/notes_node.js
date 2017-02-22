@@ -1,8 +1,8 @@
-1. Ïà¶ÔÂ·¾¶Óë¾ø¶ÔÂ·¾¶
-	htmlÖĞµÄ¶¼ÒªĞ´³É¾ø¶ÔÂ·¾¶£¡
-		°üÀ¨href¡¢src
-	srcÖĞ / Ö¸µÄÊÇÄãstatic resourcesµÄÎ»ÖÃ
-	hrefÖĞ / Ö¸µÄÊÇÍøÕ¾µÄÊ×Ò³
+1. ç›¸å¯¹è·¯å¾„ä¸ç»å¯¹è·¯å¾„
+	htmlä¸­çš„éƒ½è¦å†™æˆç»å¯¹è·¯å¾„ï¼
+		åŒ…æ‹¬hrefã€src
+	srcä¸­ / æŒ‡çš„æ˜¯ä½ static resourcesçš„ä½ç½®
+	hrefä¸­ / æŒ‡çš„æ˜¯ç½‘ç«™çš„é¦–é¡µ
 
 2. use ajax to upload file
 	see crash.pug in liscenceServer
@@ -18,7 +18,7 @@
 		    return '<a href="crash/files/' + value + '">' + value + '</a>';
 		}
 
-5. mysql ÅúÁ¿²åÈë
+5. mysql æ‰¹é‡æ’å…¥
 	insert one row at a time
 		5000 ms for 10000 records
 		the overhead of opening and closing connections is pretty large
